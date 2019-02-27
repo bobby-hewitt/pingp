@@ -1,6 +1,6 @@
 import openSocket from 'socket.io-client';
 // const  socket = openSocket('172.23.150.208:9000');
-const  socket = openSocket('http://bping.herokuapp.com');
+const  socket = openSocket('https://bping.herokuapp.com');
 
 function subscribeToHostEvents(self, cb) {
 	console.log('SUBSCRIBING TO HOST')
