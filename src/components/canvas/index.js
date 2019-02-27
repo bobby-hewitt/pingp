@@ -19,8 +19,8 @@ export default class Canvas extends Component {
 		this.ballY = window.innerHeight / 2;
 		this.ballDirX = 1;
 		this.ballDirY = 1;
-		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
-		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
+		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
+		this.ballXSpeed = Math.random() < 0.5 ? 5.5 : -5.5
 	}
 
 	componentDidMount(){
@@ -32,8 +32,8 @@ export default class Canvas extends Component {
 	setup(){
 
 		this.ballX = window.innerWidth / 2
-		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
-		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
+		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
+		this.ballXSpeed = Math.random() < 0.5 ? 5.5 : -5.5
 	}
 
 	loop(){
@@ -130,8 +130,13 @@ export default class Canvas extends Component {
 		let bottom = this.playerY + this.playerHeight
 		let secondBreak = bottom - this.playerHeight /5
 		if (this.ballY > top && this.ballY < bottom){
-			this.ballXSpeed += 0.5
+			
 			this.ballDirX *= -1
+			if (this.ballDirX < 0){
+				this.ballXSpeed -= 0.5
+			} else{
+				this.ballXSpeed += 0.5
+			}
 			if (this.ballY < firstBreak){
 				this.ballYSpeed -= 1
 			} else if (this.ballY > secondBreak){

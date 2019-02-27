@@ -15,10 +15,32 @@
 	top:0;
 	left:0;
 }
+.players{
+
+}
 .code{
+	letter-spacing: 0.4px;
+	font-size: 30px;
+	color:#a6a6a6;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 	position: absolute;
 	top:20px;
 	text-align: center;
 	width: 100%;
 	color:#f7f7f7;
+}
+
+.phoneImage{
+	height:40px;
+	margin:0 10px;
+	z-index: 1;
+}
+
+.instructions{
+	color:#f7f7f7;
+	font-weight: bold;
+	opacity:1;
 }

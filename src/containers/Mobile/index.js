@@ -83,7 +83,7 @@ class Mobile extends Component {
 		return(
 			<div className="mobile">
 				<SocketListener />
-				<div style={{transform: 'translateY(' + this.state.yDir * 5 + 'px)'}}>
+				<div style={{transform: 'translateY(' + this.state.yDir * 2 + 'px)'}}>
 				<h3>Player {JSON.stringify(this.props.playerNumber)}</h3>
 				<p >Tilt phone to control paddle</p>
 				</div>

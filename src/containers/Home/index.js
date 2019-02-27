@@ -39,7 +39,16 @@ class Home extends Component {
 					yDir={this.state.yDir}
 					yDir2={this.state.yDir2}
 					is2Player={this.state.is2Player}/>
-				<p className="code">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</p>
+					<div className="code">
+
+						{/*<img src={require("../../assets/phone.png")} className="phoneImage"/>*/}
+						<div>
+						
+						<p> On your phone visit <span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>
+						<p className="players">1-2 players.</p>
+						</div>
+						{/*<img src={require("../../assets/phone.png")} className="phoneImage"/>*/}
+				</div>
 			</div>
 		)
 	}
