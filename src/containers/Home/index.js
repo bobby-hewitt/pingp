@@ -42,7 +42,7 @@ class Home extends Component {
 					<div className="code">
 
 						{/*<img src={require("../../assets/phone.png")} className="phoneImage"/>*/}
-						<div>
+						<div className="headerContainer">
 						
 						<p> On your phone visit <span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>
 						<p className="players">1-2 players.</p>

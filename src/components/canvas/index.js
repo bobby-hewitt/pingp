@@ -53,6 +53,7 @@ export default class Canvas extends Component {
 
 	loop(){
 		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+		this.drawBoard()
 		this.updateBall()
 		if (this.ballX <= this.playerX && this.ballX > this.playerX - this.playerWidth){
 			this.checkCollision()
@@ -67,6 +68,15 @@ export default class Canvas extends Component {
 			this.updatePlayer2()
 		}
 		window.requestAnimationFrame(this.loop.bind(this))
+	}
+
+	drawBoard(){
+		this.ctx.beginPath();
+		this.ctx.setLineDash([15, 15]);
+		this.ctx.strokeStyle = '#555';
+		this.ctx.moveTo(window.innerWidth / 2, 0);
+		this.ctx.lineTo(window.innerWidth / 2, window.innerHeight);
+		this.ctx.stroke();
 	}
 
 	updateBall(){
