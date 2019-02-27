@@ -11,9 +11,13 @@ export default class Canvas extends Component {
 		this.playerWidth = 7;
 		this.playerX = 20;
 		this.playerY = window.innerHeight / 2 - this.playerHeight / 2
-		//ball
+		//player 2
 		this.player2X = window.innerWidth - this.playerX;
 		this.player2Y = window.innerHeight / 2 - this.playerHeight / 2
+		//scores
+		this.player1Score = 0;
+		this.player2Score = 0;
+		//ball
 		this.ballSize = 5;
 		this.ballX = window.innerWidth / 2;
 		this.ballY = window.innerHeight / 2;
@@ -21,12 +25,23 @@ export default class Canvas extends Component {
 		this.ballDirY = 1;
 		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
 		this.ballXSpeed = Math.random() < 0.5 ? 5.5 : -5.5
+		this.state = {
+			player1Score: 0,
+			player2Score: 0,
+		}
 	}
 
 	componentDidMount(){
 		let ctx = this.refs.canvas.getContext('2d')
 		this.ctx = ctx
 		this.loop()
+	}
+
+	resetScores(){
+		this.setState({
+			player1Score: 0,
+			player2Score: 0
+		})
 	}
 
 	setup(){
@@ -59,11 +74,13 @@ export default class Canvas extends Component {
 		this.ballY = this.ballY + (this.ballYSpeed * this.ballDirY)
 		if (this.ballX > window.innerWidth - this.ballSize ){
 			if (this.props.is2Player){
+				this.setState({player1Score: this.state.player1Score + 1})
 				this.setup()
 			} else {
 				this.ballDirX *= -1
 			}
 		} else if (this.ballX < 0){
+			this.setState({player2Score: this.state.player2Score + 1})
 			this.setup()
 		}
 		if (this.ballY > window.innerHeight - this.ballSize || this.ballY <= 0){
@@ -162,9 +179,24 @@ export default class Canvas extends Component {
 
 	render(){
 		return(
+			<div>
+
 			<canvas ref="canvas" id="canvas" height={window.innerHeight} width={window.innerWidth}>
 
 			</canvas>
+			<div className="scores">
+			{this.props.is2Player &&
+				<p>{this.state.player1Score}-{this.state.player2Score}</p>
+			}
+
+			</div>
+			{this.props.is2Player &&
+				<div className="button" onClick={this.resetScores.bind(this)}>
+					Reset scores
+				</div>
+			}
+			</div>
+
 		)
 	}
 }
