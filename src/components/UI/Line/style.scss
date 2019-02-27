@@ -1,0 +1,16 @@
+@import 'styles/index.scss';
+
+.UI__line{
+	transition:all 1s ease;
+	width:20px;
+	height:$baseline * 3;
+	background:$primary;
+	margin-bottom:$baseline * 5;
+	&.secondary{
+		background:$inverse;
+	}
+	&.extended{
+		width:200px;
+		
+	}
+}

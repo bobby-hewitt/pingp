@@ -1,0 +1,22 @@
+$primary: #66fcf1;
+$inverse: #0b0c10;
+
+
+
+
+.primary{
+	background:$primary;
+}
+.inverse{
+	background:$inverse;
+}
+
+
+.type.inverse{
+	color:$inverse;
+	background:transparent;
+}
+.type.primary{
+	color:$primary;
+	background:transparent;
+}

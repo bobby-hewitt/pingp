@@ -1,0 +1,16 @@
+.UI__background-image{
+	position:relative;
+	background-position:center;
+	background-size:cover;
+	width:100%;
+	height:100%;
+	z-index: -1;
+	&.isSectionBackground{
+		position: absolute;
+		top:0;
+		left:0;
+	}
+
+	//delete when containers are built
+
+}
