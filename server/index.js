@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }))
 app.use(express.static('build'));
 // set up database connection
-
+console.log('port', process.env.PORT)
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DB_URL);
