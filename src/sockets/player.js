@@ -89,6 +89,8 @@ function quitGameSocket(self){
 function restartGameSocket(self){
 	console.log('EMITTING restart game')
 	// self.props.startGame()
+	self.props.setGameOver(false)
+
 	emit('restart-game', self.props.room.long)
 }
 

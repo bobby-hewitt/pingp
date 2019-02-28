@@ -98,10 +98,13 @@ class Home extends Component {
 					numOfPlayers={this.props.players.length}/>
 					<div className="code">
 					<div className="headerContainer">
-					{uri && !this.props.gameIsStarted &&
+					{uri && !this.props.gameIsStarted && this.props.players.length < 2 &&
 						<img className="qr" src={uri} />
 					}
-					{!this.props.gameIsStarted &&
+					{!this.props.gameIsStarted && this.props.players.length >= 2 &&
+						<h4 className="qr">Someone Press play!</h4>
+					}
+					{!this.props.gameIsStarted && this.props.players.length < 2 &&
 						<div>
 							<p className="players">2 players, your phones are the controllers.</p>
 							<p>Scan the QR code or go to:</p>
@@ -114,6 +117,9 @@ class Home extends Component {
 					}
 					{this.props.gameOver &&
 						<h1 className="qr">Game over</h1>
+					}
+					{this.props.gameIsStarted && this.props.players.length < 2 &&
+						<p className="help">Pause game to add another player</p>
 					}
 					</div>
 				</div>

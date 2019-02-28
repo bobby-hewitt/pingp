@@ -7,6 +7,7 @@ export default class Canvas extends Component {
 		super(props)
 		this.maxScore = 7;
 		this.ctx = null;
+		this.hasStarted = false;
 		//player
 		this.playerHeight = 100;
 		this.playerWidth = 7;
@@ -38,7 +39,16 @@ export default class Canvas extends Component {
 			this.setup()
 		}
 		if (this.props.isGameOver && !np.isGameOver){
+			this.hasStarted = false;
+			this.playerY = window.innerHeight / 2 - this.playerHeight / 2
+			this.player2X = window.innerWidth - this.playerX;
+			this.player2Y = window.innerHeight / 2 - this.playerHeight / 2
+			this.ballX = window.innerWidth / 2;
+			this.ballY = window.innerHeight / 2 -100;
 			this.resetScores()
+		}
+		if (!this.props.isGameOver && np.isGameOver){
+			this.hasStarted = false;
 		}
 		if(this.props.height !== np.height || this.props.width !== np.width){
 			this.playerY = window.innerHeight / 2 - this.playerHeight / 2
@@ -75,8 +85,13 @@ export default class Canvas extends Component {
 		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 		//update things
 		if (this.props.isPlaying && !this.props.isGameOver){
+			this.hasStarted = true
 			this.updateBall()
 			if (this.props.is2Player) this.updatePlayer2()
+			this.updatePlayer()
+
+		} else if (!this.props.isPlaying && !this.hasStarted){
+			this.updatePlayer2()
 			this.updatePlayer()
 
 		}
@@ -249,11 +264,7 @@ export default class Canvas extends Component {
 					</div>
 				}
 			</div>
-			{this.props.numOfPlayers > 1 &&
-				<div className="button" onClick={this.resetScores.bind(this)}>
-					Reset scores
-				</div>
-			}
+			
 			</div>
 
 		)
