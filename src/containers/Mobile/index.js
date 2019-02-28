@@ -56,27 +56,27 @@ class Mobile extends Component {
 	}
 
 	findLimit(coord){
-		if (coord < -47.5) return -10
-		else if (coord < -42.5) return -9
-		else if (coord < -37.5) return -8
-		else if (coord < -32.5) return -7
-		else if (coord < -27.5) return -6
-		else if (coord < -22.5) return -5
-		else if (coord < -17.5) return -4
-		else if (coord < -12.5) return -3
+		if (coord < -47.5) return -21
+		else if (coord < -42.5) return -19
+		else if (coord < -37.5) return -16
+		else if (coord < -32.5) return -13
+		else if (coord < -27.5) return -10
+		else if (coord < -22.5) return -8
+		else if (coord < -17.5) return -6
+		else if (coord < -12.5) return -4
 		else if (coord < -7.5) return -2
 		else if (coord < -2.5) return -1
 		else if (coord < 2.5) return 0
 		else if (coord < 7.5) return 1
 		else if (coord < 12.5) return 2
-		else if (coord < 17.5 ) return 3
-		else if (coord < 22.5 ) return 4
-		else if (coord < 27.5 ) return 5
-		else if (coord < 32.5 ) return 6
-		else if (coord < 37.5 ) return 7
-		else if (coord < 42.5 ) return 8
-		else if (coord < 47.5 ) return 9
-		else return 10
+		else if (coord < 17.5 ) return 4
+		else if (coord < 22.5 ) return 6
+		else if (coord < 27.5 ) return 8
+		else if (coord < 32.5 ) return 10
+		else if (coord < 37.5 ) return 13
+		else if (coord < 42.5 ) return 16
+		else if (coord < 47.5 ) return 19
+		else return 21
 	}
 
 	render(){

@@ -26,11 +26,11 @@ class Home extends Component {
 
 	componentWillReceiveProps(np){
 		if (this.state.yDir !== np.coords.y){
-			console.warn('new dirs player 1', np.coords)
+			// console.warn('new dirs player 1', np.coords)
 			this.setState({yDir:np.coords.y})
 		}
 		if (this.state.yDir2 !== np.coords2.y){
-			console.warn('new dirs player 2', np.coords)
+			// console.warn('new dirs player 2', np.coords)
 			this.setState({yDir2:np.coords2.y, is2Player:true})
 		}
 		if (!this.props.gameIsStarted && np.gameIsStarted){
@@ -73,7 +73,7 @@ class Home extends Component {
 			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.208:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
 		// console.log(uri)
-		console.log('numOfPlayers', this.props.players.length)
+		// console.log('numOfPlayers', this.props.players.length)
 		return(
 			<div className="home">
 				<SocketListener isHost/>
@@ -93,8 +93,10 @@ class Home extends Component {
 					}
 					{!this.props.gameIsStarted &&
 						<div>
+							<p className="players">2 players, your phones are the controllers.</p>
+							<p>Scan the QR code or go to:</p>
+							
 							<p><span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>
-							<p className="players">Press start on your phone to begin</p>
 						</div>
 					}
 					{this.state.countdown &&

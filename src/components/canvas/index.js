@@ -5,7 +5,7 @@ export default class Canvas extends Component {
 
 	constructor(props){
 		super(props)
-		this.maxScore = 2;
+		this.maxScore = 7;
 		this.ctx = null;
 		//player
 		this.playerHeight = 100;
@@ -24,8 +24,8 @@ export default class Canvas extends Component {
 		this.ballY = window.innerHeight / 2 -100;
 		this.ballDirX = 1;
 		this.ballDirY = 1;
-		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
-		this.ballXSpeed = Math.random() < 0.5 ? 5.5 : -5.5
+		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
+		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
 		this.state = {
 			player1Score: 0,
 			player2Score: 0,
@@ -59,8 +59,8 @@ export default class Canvas extends Component {
 	setup(){
 		this.ballY = window.innerHeight / 2 - 100
 		this.ballX = window.innerWidth / 2
-		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
-		this.ballXSpeed = Math.random() < 0.5 ? 5.5 : -5.5
+		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
+		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
 	}
 
 	loop(){
@@ -199,9 +199,11 @@ export default class Canvas extends Component {
 			
 			this.ballDirX *= -1
 			if (this.ballDirX < 0){
-				this.ballXSpeed -= 0.5
+				console.log('increassing ball speed', this.ballXSpeed)
+				this.ballXSpeed -= 1
 			} else{
-				this.ballXSpeed += 0.5
+				console.log('increassing ball speed', this.ballXSpeed)
+				this.ballXSpeed += 1
 			}
 			if (this.ballY < firstBreak){
 				this.ballYSpeed -= 1
