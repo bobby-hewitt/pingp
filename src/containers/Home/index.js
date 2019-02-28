@@ -33,24 +33,27 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(np){
+		//new player 1 data
 		if (this.state.yDir !== np.coords.y){
-			// console.warn('new dirs player 1', np.coords)
 			this.setState({yDir:np.coords.y})
 		}
+		//new player 2 data
 		if (this.state.yDir2 !== np.coords2.y){
-			// console.warn('new dirs player 2', np.coords)
 			this.setState({yDir2:np.coords2.y, is2Player:true})
 		}
+		//start a new game
 		if (!this.props.gameIsStarted && np.gameIsStarted){
 			this.startGame()
-		} else if (this.props.gameIsStarted && !np.gameIsStarted){
-
+		} 
+		//stop game
+		else if (this.props.gameIsStarted && !np.gameIsStarted){
 			for (var i = 0; i < this.timeouts.length; i++){
 				clearTimeout(this.timeouts[i])
 			}
 			this.setState({isPlaying: false, countdown: false, countdownNumber: '3'})
 		}
 	}
+
 
 	startGame(){
 		for (var i = 0; i < this.timeouts.length; i++){
@@ -70,7 +73,6 @@ class Home extends Component {
 
 	gameOver(){
 		gameOver(this)
-		//send game over message
 	}
 
 	render(){
@@ -80,8 +82,6 @@ class Home extends Component {
 			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('http://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
 			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.208:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
-		// console.log(uri)
-		// console.log('numOfPlayers', this.props.players.length)
 		return(
 			<div className="home">
 				<SocketListener isHost/>
@@ -123,12 +123,10 @@ class Home extends Component {
 					}
 					</div>
 				</div>
-				
 				{this.state.height < 500 || this.state.width < 800 &&
 					<div className="tooSmall">
 						<div>
-							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>						
-							
+							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
 						</div>
 					</div>
 				}

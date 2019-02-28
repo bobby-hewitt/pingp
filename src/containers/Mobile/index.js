@@ -37,20 +37,17 @@ class Mobile extends Component {
 	}
 
 	componentDidMount(){
-	// if (this.props.playerNumber === null){
-	// 		this.props.push('/not-found')
-	// 	}	
 		window.addEventListener('deviceorientation', (orientation) => {
 			let y = this.findLimit(orientation.beta)
-			
-			if (y !== this.state.yDir){				
+			let x = this.findLimit(orientation.gamma)
+			if (y !== this.state.yDir || x !== this.state.xDir){				
 				let dirs = {
+					x: x,
 					y: y,
 					playerNumber: this.props.playerNumber
 				}
-				console.log('sending oritentation', y)
 				sendOrientation(dirs, this)
-				this.setState({yDir: y})
+				this.setState({yDir: y, xDir: x})
 			}
 		})
 	}
