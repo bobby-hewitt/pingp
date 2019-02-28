@@ -1,6 +1,7 @@
 //app setup
 var cors = require('cors')
-var app = require('express')();
+var express = require('express')
+var app = express()
 var http = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io')(http);
