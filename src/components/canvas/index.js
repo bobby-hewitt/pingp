@@ -9,7 +9,7 @@ export default class Canvas extends Component {
 		this.ctx = null;
 		this.hasStarted = false;
 		//player
-		this.playerHeight = 100;
+		this.playerHeight = 120;
 		this.playerWidth = 7;
 		this.playerX = 20;
 		this.playerY = window.innerHeight / 2 - this.playerHeight / 2
@@ -214,39 +214,33 @@ export default class Canvas extends Component {
 
 	checkCollision(){
 		let top = this.playerY
-		let firstBreak = this.playerY + this.playerHeight /5
 		let bottom = this.playerY + this.playerHeight
-		let secondBreak = bottom - this.playerHeight /5
 		if (this.ballY > top && this.ballY < bottom){
-			
 			this.ballDirX *= -1
+			//handles ballXSpeed
 			if (this.ballDirX < 0){
-				console.log('increassing ball speed', this.ballXSpeed)
 				this.ballXSpeed -= 1
 			} else{
-				console.log('increassing ball speed', this.ballXSpeed)
 				this.ballXSpeed += 1
 			}
-			if (this.ballY < firstBreak){
-				this.ballYSpeed -= 1
-			} else if (this.ballY > secondBreak){
-				this.ballYSpeed += 1
+			//handles ballYSpeed
+			if (this.playerY !== 0 && this.playerY !== window.innerHeight){
+				this.ballYSpeed -= this.props.yDir / 3
 			}
 		}
 	}
 
 	checkPlayer2Collision(){
 		let top2 = this.player2Y
-		let firstBreak2 = this.player2Y + this.playerHeight /5
+		// let firstBreak2 = this.player2Y + this.playerHeight /5
 		let bottom2 = this.player2Y + this.playerHeight
-		let secondBreak2 = bottom2 - this.playerHeight /5
+		// let secondBreak2 = bottom2 - this.playerHeight /5
 		if (this.ballY > top2 && this.ballY < bottom2){
 			this.ballDirX *= -1
-			if (this.ballY < firstBreak2){
-				this.ballYSpeed -= 1
-			} else if (this.ballY > secondBreak2){
-				this.ballYSpeed += 1
+			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight){
+				this.ballYSpeed -= this.props.yDir2 / 3
 			}
+			
 		}	
 	}
 
