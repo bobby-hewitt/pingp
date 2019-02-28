@@ -15,6 +15,8 @@ class Home extends Component {
 		this.timeouts = []
 		this.speed = 1
 		this.state = {
+			height: window.innerHeight,
+			width:window.innerWidth,
 			yDir: 0,
 			yDir2: 0,
 			is2Player: false,
@@ -22,6 +24,12 @@ class Home extends Component {
 			isPlaying: false,
 			countdownNumber: '3',
 		}
+	}
+
+	componentDidMount(){
+		window.addEventListener("resize", () => {
+			this.setState({height:window.innerHeight, width: window.innerWidth})
+		});
 	}
 
 	componentWillReceiveProps(np){
@@ -78,6 +86,8 @@ class Home extends Component {
 			<div className="home">
 				<SocketListener isHost/>
 				<Canvas 
+					height={this.state.height}
+					width={this.state.width}
 					isGameOver={this.props.gameOver}
 					gameOver={this.gameOver.bind(this)}
 					isPlaying={this.props.gameIsStarted}
@@ -107,6 +117,15 @@ class Home extends Component {
 					}
 					</div>
 				</div>
+				
+				{this.state.height < 500 || this.state.width < 800 &&
+					<div className="tooSmall">
+						<div>
+							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>						
+							
+						</div>
+					</div>
+				}
 			</div>
 		)
 	}

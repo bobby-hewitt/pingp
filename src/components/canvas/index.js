@@ -40,6 +40,13 @@ export default class Canvas extends Component {
 		if (this.props.isGameOver && !np.isGameOver){
 			this.resetScores()
 		}
+		if(this.props.height !== np.height || this.props.width !== np.width){
+			this.playerY = window.innerHeight / 2 - this.playerHeight / 2
+			this.player2X = window.innerWidth - this.playerX;
+			this.player2Y = window.innerHeight / 2 - this.playerHeight / 2
+			this.ballX = window.innerWidth / 2;
+			this.ballY = window.innerHeight / 2 -100;
+		}
 	}
 
 
@@ -231,7 +238,7 @@ export default class Canvas extends Component {
 	render(){
 		return(
 			<div>
-				<canvas ref="canvas" id="canvas" height={window.innerHeight} width={window.innerWidth}>
+				<canvas ref="canvas" id="canvas" height={this.props.height} width={this.props.width}>
 				</canvas>
 			<div className="scores">
 				{this.props.numOfPlayers > 1 &&
