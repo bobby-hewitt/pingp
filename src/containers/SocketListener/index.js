@@ -7,6 +7,7 @@ import {subscribeToPlayerEvents} from '../../sockets/player'
 import {subscribeToHostEvents} from '../../sockets/host'
 import { setRoomCode, addPlayer, startRoundHost, setResponses, setCoords1, setCoords2 } from '../../actions/host'
 import { setPlayerRoom, setSelf, setPlayerNumber } from '../../actions/player'
+import { startGame, setGameOver } from '../../actions/gameplay'
 
 
 class SocketListener extends Component {
@@ -40,6 +41,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setRoomCode,
+  startGame,
+  setGameOver,
   setPlayerNumber,
   setResponses,
   setCoords1,

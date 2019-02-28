@@ -5,8 +5,8 @@ export default class RoomFull extends Component {
 	render(){
 		return(
 			<div className="roomNotFound">
-				<h3>Oh no!</h3>
-				<p>Couldn't find the game.</p>
+				<h3>The game is over!</h3>
+				<p>Scan the QR code to start again</p>
 			</div>
 		)
 	}	

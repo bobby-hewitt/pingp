@@ -1,7 +1,6 @@
 //app setup
 var cors = require('cors')
-var express= require('express')
-var app = express();
+var app = require('express')();
 var http = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io')(http);
@@ -15,9 +14,8 @@ app.use( bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }))
-app.use(express.static('build'));
 // set up database connection
-console.log('port', process.env.PORT)
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DB_URL);
@@ -39,8 +37,12 @@ io.on('connection', function(socket){
   socket.on('device-orientation', PlayerConnection.deviceOrientation.bind(this, socket))
   // socket.on('player-join-room', PlayerConnection.playerJoinRoom.bind(this, socket))
   socket.on('player-join-room', checkRoomNumbers.bind(this, socket))
-  socket.on('start-round', HostConnection.startRound.bind(this, socket))
+  // socket.on('start-round', HostConnection.startRound.bind(this, socket))
+  socket.on('start-game', PlayerConnection.startGame.bind(this, socket))
   socket.on('player-buzz', PlayerConnection.playerBuzz.bind(this, socket))
+  socket.on('quit-game-player', PlayerConnection.quitGame.bind(this, socket))
+  socket.on('game-over', HostConnection.gameOver.bind(this, socket))
+  socket.on('restart-game', PlayerConnection.restartGame.bind(this, socket))
 });
 
 
@@ -55,9 +57,7 @@ function checkRoomNumbers(socket, playerData){
 			console.log('number in room', )
 			if (numberInRoom <= 2){
 				console.log('number in room < 2')
-				socket.join(result.long)
-				
-
+				socket.join(result.long)	
 				// playerData
 				socket.broadcast.to(result.long).emit('player-joined', playerData);
 				result.player = playerData
@@ -81,8 +81,11 @@ function checkRoomNumbers(socket, playerData){
 
 function disconnect(socket){
 	let rooms = socket.rooms
-	console.log('rooms', rooms)
+
+	//handle host disconnect
 	Rooms.findOne({long: socket.id}, function(err, room){
+		socket.broadcast.to(socket.id).emit('host-quit');
+		socket.emit('quit-game-player');
 		console.log('deleting the room')
 		if (room) return room.remove()
 	})

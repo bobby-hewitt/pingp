@@ -22,6 +22,24 @@ exports.playerJoinRoom = function(socket, playerData){
 	})
 }
 
+exports.startGame = function(socket, data){
+	console.log('STARTING GAME')
+	// socket.to(socket.id).emit('start-game');
+	socket.to(data).emit('start-game');
+}
+
+exports.restartGame = function(socket, data){
+	// console.log('STARTING GAME')
+	// socket.to(socket.id).emit('start-game');
+	socket.to(data).emit('restart-game');
+}
+
+exports.quitGame = function(socket, data){
+	console.log('STARTING GAME')
+	// socket.to(socket.id).emit('start-game');
+	socket.to(data).emit('quit-game-player');
+}
+
 exports.playerBuzz = function(socket, data){
 	// console.log('playerBuzz', data)
 	socket.to(data.room).emit('player-responded', data);

@@ -32,6 +32,7 @@ export default (state = initialState, action) => {
     case 'ADD_PLAYER':
       let newPlayers = Object.assign([], state.players)
       newPlayers.push(action.payload)
+      console.log('ADDING PLAYER', newPlayers)
       // console.log(newPlayers)
       return {
         ...state,

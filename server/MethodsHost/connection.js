@@ -35,3 +35,10 @@ exports.startRound = function(socket){
 	socket.to(socket.id).emit('start-round');
 }
 
+
+exports.gameOver = function(socket){
+	// console.log('starting round')
+	console.log('SENDING GAME OVER ')
+	socket.to(socket.id).emit('game-over');
+}
+

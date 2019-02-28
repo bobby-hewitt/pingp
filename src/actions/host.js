@@ -7,6 +7,7 @@ export const setRoomCode = (payload) => {
   }
 }
 
+
 export const setCoords1 = (payload) => {
   return dispatch => {
     dispatch({

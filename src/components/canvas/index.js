@@ -5,6 +5,7 @@ export default class Canvas extends Component {
 
 	constructor(props){
 		super(props)
+		this.maxScore = 2;
 		this.ctx = null;
 		//player
 		this.playerHeight = 100;
@@ -20,7 +21,7 @@ export default class Canvas extends Component {
 		//ball
 		this.ballSize = 5;
 		this.ballX = window.innerWidth / 2;
-		this.ballY = window.innerHeight / 2;
+		this.ballY = window.innerHeight / 2 -100;
 		this.ballDirX = 1;
 		this.ballDirY = 1;
 		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
@@ -30,6 +31,17 @@ export default class Canvas extends Component {
 			player2Score: 0,
 		}
 	}
+
+	componentWillReceiveProps(np){
+		if (this.props.numOfPlayers !== 2 && np.numOfPlayers === 2){
+			this.resetScores()
+			this.setup()
+		}
+		if (this.props.isGameOver && !np.isGameOver){
+			this.resetScores()
+		}
+	}
+
 
 	componentDidMount(){
 		let ctx = this.refs.canvas.getContext('2d')
@@ -45,28 +57,34 @@ export default class Canvas extends Component {
 	}
 
 	setup(){
-
+		this.ballY = window.innerHeight / 2 - 100
 		this.ballX = window.innerWidth / 2
 		this.ballYSpeed = Math.random() < 0.5 ? 5.5 : -5.5
 		this.ballXSpeed = Math.random() < 0.5 ? 5.5 : -5.5
 	}
 
 	loop(){
+		//clear things
 		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-		this.drawBoard()
-		this.updateBall()
+		//update things
+		if (this.props.isPlaying && !this.props.isGameOver){
+			this.updateBall()
+			if (this.props.is2Player) this.updatePlayer2()
+			this.updatePlayer()
+
+		}
+		
+		//check thinggs
 		if (this.ballX <= this.playerX && this.ballX > this.playerX - this.playerWidth){
 			this.checkCollision()
-		} else if (this.props.is2Player && this.ballX + this.ballSize >= this.player2X && this.ballX < this.player2X + this.playerWidth){
-			console.log('checking player 2 collision')
+		} else if (this.ballX + this.ballSize >= this.player2X && this.ballX < this.player2X + this.playerWidth){
 			this.checkPlayer2Collision()
 		}
-		this.drawBall()
-		this.updatePlayer()
+		//draw things
+		this.drawBoard()
 		this.drawPlayer()
-		if (this.props.is2Player){
-			this.updatePlayer2()
-		}
+		this.drawBall()
+		//loop things
 		window.requestAnimationFrame(this.loop.bind(this))
 	}
 
@@ -79,23 +97,45 @@ export default class Canvas extends Component {
 		this.ctx.stroke();
 	}
 
+	score(player){
+
+	}
+
 	updateBall(){
 		this.ballX = this.ballX + (this.ballXSpeed * this.ballDirX)
 		this.ballY = this.ballY + (this.ballYSpeed * this.ballDirY)
 		if (this.ballX > window.innerWidth - this.ballSize ){
 			if (this.props.is2Player){
-				this.setState({player1Score: this.state.player1Score + 1})
+				if (this.state.player1Score + 1 < this.maxScore){
+					this.setState({player1Score: this.state.player1Score + 1})
+				} else {
+					this.setState({player1Score: this.state.player1Score + 1}, () => {
+						this.props.gameOver()
+					})
+				}
+				
 				this.setup()
 			} else {
 				this.ballDirX *= -1
 			}
-		} else if (this.ballX < 0){
-			this.setState({player2Score: this.state.player2Score + 1})
+		} else if (this.ballX < 0 && this.props.numOfPlayers > 0){
+			if (this.props.is2Player){
+				if (this.state.player2Score + 1 < this.maxScore){
+					this.setState({player2Score: this.state.player2Score + 1})
+				} else {
+					this.setState({player2Score: this.state.player2Score + 1}, () => {
+						this.props.gameOver()
+					})
+				}
+			}
 			this.setup()
+		} else if (this.ballX < 0){
+			this.ballDirX *= -1
 		}
 		if (this.ballY > window.innerHeight - this.ballSize || this.ballY <= 0){
 			this.ballDirY *= -1
 		}
+
 	}
 
 	drawBall(){
@@ -145,10 +185,9 @@ export default class Canvas extends Component {
 		}
 		var player = new Player(this.playerX - this.playerWidth, this.playerY, this.playerWidth,this.playerHeight);
 		player.draw(this.ctx);
-		if (this.props.is2Player){
-			var player2 = new Player(this.player2X - this.playerWidth, this.player2Y, this.playerWidth,this.playerHeight);
-			player2.draw(this.ctx);
-		}
+		var player2 = new Player(this.player2X - this.playerWidth, this.player2Y, this.playerWidth,this.playerHeight);
+		player2.draw(this.ctx);
+		
 	}
 
 	checkCollision(){
@@ -190,17 +229,18 @@ export default class Canvas extends Component {
 	render(){
 		return(
 			<div>
-
-			<canvas ref="canvas" id="canvas" height={window.innerHeight} width={window.innerWidth}>
-
-			</canvas>
+				<canvas ref="canvas" id="canvas" height={window.innerHeight} width={window.innerWidth}>
+				</canvas>
 			<div className="scores">
-			{this.props.is2Player &&
-				<p>{this.state.player1Score}-{this.state.player2Score}</p>
-			}
-
+				{this.props.numOfPlayers > 1 &&
+					<div className="row">
+					<p>{this.state.player1Score}</p>
+					<p>-</p>
+					<p>{this.state.player2Score}</p>
+					</div>
+				}
 			</div>
-			{this.props.is2Player &&
+			{this.props.numOfPlayers > 1 &&
 				<div className="button" onClick={this.resetScores.bind(this)}>
 					Reset scores
 				</div>

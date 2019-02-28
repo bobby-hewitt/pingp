@@ -7,6 +7,7 @@ export const setPlayerRoom = (payload) => {
     })
   }
 }
+
 export const setPlayerNumber = (payload) => {
   console.log('SETTING PLAYER Number')
   return dispatch => {

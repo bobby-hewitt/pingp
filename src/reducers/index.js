@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux'
 import { connectRouter } from 'connected-react-router'
 // import counter from './counter'
 import host from './host'
+import gameplay from './gameplay'
 import player from './player'
 
 
@@ -18,6 +19,7 @@ export default (history) => combineReducers({
    
   // counter,
   player,
+  gameplay,
   host
 })
 

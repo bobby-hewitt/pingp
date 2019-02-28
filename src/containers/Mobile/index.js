@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from '../SocketListener'
-import { joinRoom, sendOrientation } from '../../sockets/player'
+import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket } from '../../sockets/player'
 import { setSelf  } from '../../actions/player'
-
+import { startGame } from '../../actions/gameplay'
 
 class Mobile extends Component {
 
@@ -31,8 +31,8 @@ class Mobile extends Component {
 	}
 
 	componentWillReceiveProps(np){
-		if (np.playerNumber === null && this.props.playerNumber !== null){
-			this.props.push('/not-found')
+		if (!np.playerNumber && this.props.playerNumber){
+			this.props.push('not-found')
 		}
 	}
 
@@ -83,24 +83,56 @@ class Mobile extends Component {
 		return(
 			<div className="mobile">
 				<SocketListener />
-				<div style={{transform: 'translateY(' + this.state.yDir * 2 + 'px)'}}>
-				<h3>Player {JSON.stringify(this.props.playerNumber)}</h3>
-				<p >Tilt phone to control paddle</p>
+				{!this.props.gameOver &&
+					<div className="mobileInstructions">
+						<h3>Player {JSON.stringify(this.props.playerNumber)}</h3>
+						<p >Tilt phone to control paddle</p>
+					</div>
+				}
+				{this.props.gameOver &&
+					<div className="mobileInstructions">
+						<h3>Game over</h3>
+						<p >Restart or quit game</p>
+					</div>
+				}
+				<div className="quitButtonMobile" onClick={quitGameSocket.bind(this, this)} >
+					<h6>Quit game</h6>
 				</div>
+				{!this.props.gameIsStarted && !this.props.gameOver &&
+ 					<div className="buttonMobile" onClick={startGameSocket.bind(this, this)} >
+						<h6>Play</h6>
+					</div>
+				}
+				{this.props.gameIsStarted && !this.props.gameOver &&
+					<div className="buttonMobile" onClick={startGameSocket.bind(this, this)} >
+						<h6>Pause</h6>
+					</div>
+				}
+				{this.props.gameOver &&
+					<div className="buttonMobile" onClick={restartGameSocket.bind(this, this)} >
+						<h6>Restart game</h6>
+					</div>
+				}
+
+					
+			
 			</div>
 		)
 	}
 }
 
 const mapStateToProps = state => ({
+	gameIsStarted: state.gameplay.gameIsStarted,
 	router: state.router,
 	room: state.player.room,
-	playerNumber: state.player.playerNumber
+	playerNumber: state.player.playerNumber,
+	gameOver: state.gameplay.gameOver,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   push: (path) => push(path),
-  setSelf
+  setSelf,
+  startGame,
 }, dispatch)
 
 export default connect(

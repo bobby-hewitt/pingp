@@ -6,10 +6,11 @@
 	height:100%;
 	width:100%;
 	overflow: hidden;
-	display: flex;
+	bottom:0;
+	right:0;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
+	display: flex;
 	p, h3{
 		font-size: 24px;
 		transition: all 0.1s linear;
@@ -18,5 +19,34 @@
 	}
 	p{
 		color:#a6a6a6;
+	}
+	.mobileInstructions{
+		margin-top:-100px;
+	}
+	.buttonMobile{
+		position: fixed;
+		bottom:10px;
+		left:10px;
+		right:10px;
+		height:50px;
+		border:2px solid #f7f7f7;
+		align-items: center;
+		justify-content: center;
+		color:#f7f7f7;
+		padding:10px;
+		text-align: center;
+	}
+	.quitButtonMobile{
+		position: fixed;
+		bottom:70px;
+		left:10px;
+		right:10px;
+		height:50px;
+		/* border:2px solid #f7f7f7; */
+		align-items: center;
+		justify-content: center;
+		color:#a6a6a6;
+		padding:10px;
+		text-align: center;
 	}
 }
