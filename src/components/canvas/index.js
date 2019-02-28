@@ -228,7 +228,12 @@ export default class Canvas extends Component {
 			}
 			//changes ball y speed if paddle is moving on impact
 			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight){
-				this.ballYSpeed -= this.props.yDir / 3
+				if (this.ballYSpeed > 0){
+					this.ballYSpeed += this.props.yDir / 3
+				} else {
+					this.ballYSpeed -= this.props.yDir / 3
+				}
+				
 			}
 		}
 	}
@@ -240,7 +245,11 @@ export default class Canvas extends Component {
 			this.ballDirX *= -1
 			//changes ball y speed if paddle is moving on impact
 			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight){
-				this.ballYSpeed -= this.props.yDir2 / 3
+				if (this.ballYSpeed > 0){
+					this.ballYSpeed += this.props.yDir2 / 3
+				} else {
+					this.ballYSpeed -= this.props.yDir2 / 3
+				}
 			}	
 		}	
 	}
