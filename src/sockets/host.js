@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-// const  socket = openSocket('172.23.150.208:9000');
+// const  socket = openSocket('172.23.150.213:9000');
 const  socket = openSocket('https://bping.herokuapp.com');
 
 function subscribeToHostEvents(self, cb) {
@@ -43,9 +43,9 @@ function roomCodeGenerated(cb, data){
 	cb('setRoomCode', data)
 }
 
-function gameOver(self){
+function gameOver(self, winner){
 	self.props.setGameOver(true)
-	socket.emit('game-over')
+	socket.emit('game-over', winner)
 }
 
 // function startRound(self){

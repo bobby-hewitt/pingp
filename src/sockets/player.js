@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-// const  socket = openSocket('172.23.150.208:9000');
+// const  socket = openSocket('172.23.150.213:9000');
 const  socket = openSocket('https://bping.herokuapp.com');
 
 function subscribeToPlayerEvents(self, cb) {
@@ -11,7 +11,7 @@ function subscribeToPlayerEvents(self, cb) {
 	socket.on('room-full', roomFull.bind(this, self))
 	socket.on('host-quit', hostQuit.bind(this, self))
 	socket.on('restart-game', restartGame.bind(this, cb))
-	socket.on('game-over', gameOver.bind(this, cb))
+	socket.on('game-over', gameOver.bind(this, self))
 }
 
 function roomFull(self){
@@ -22,8 +22,9 @@ function hostQuit(self){
 	self.props.push('not-found')
 }
 
-function gameOver(cb){
-	cb('setGameOver', true)
+function gameOver(self, data){
+	self.props.setGameOver(true, data)
+	// cb('setGameOver', true)
 }
 
 
@@ -89,9 +90,10 @@ function quitGameSocket(self){
 function restartGameSocket(self){
 	console.log('EMITTING restart game')
 	// self.props.startGame()
+	emit('restart-game', self.props.room.long)
 	self.props.setGameOver(false)
 
-	emit('restart-game', self.props.room.long)
+	
 }
 
 

@@ -23,6 +23,7 @@ class Home extends Component {
 			countdown: false,
 			isPlaying: false,
 			countdownNumber: '3',
+			gameOver: false,
 		}
 	}
 
@@ -41,17 +42,27 @@ class Home extends Component {
 		if (this.state.yDir2 !== np.coords2.y){
 			this.setState({yDir2:np.coords2.y, is2Player:true})
 		}
-		//start a new game
+		//start game
 		if (!this.props.gameIsStarted && np.gameIsStarted){
 			this.startGame()
 		} 
+		//start a subsequent game
+		if (this.props.gameOver && !np.gameOver){
+			this.setState({countdownNumber: '3', countdown: true, isPlaying: false, gameOver: false}, () => {
+				this.startGame()
+			})
+		}
+		//game over 
+		if (!this.props.gameOver && np.gameOver){
+			this.setState({gameOver: true})
+		}
 		//stop game
 		else if (this.props.gameIsStarted && !np.gameIsStarted){
 			for (var i = 0; i < this.timeouts.length; i++){
 				clearTimeout(this.timeouts[i])
 			}
 			this.setState({isPlaying: false, countdown: false, countdownNumber: '3'})
-		}
+		} 
 	}
 
 
@@ -71,8 +82,9 @@ class Home extends Component {
 		},delay)
 	}
 
-	gameOver(){
-		gameOver(this)
+	gameOver(winner){
+
+		gameOver(this, winner)
 	}
 
 	render(){
@@ -80,7 +92,7 @@ class Home extends Component {
 		let uri = false;
 		if (this.props.roomCode){
 			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('http://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
-			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.208:3000/m/' + this.props.roomCode.toLowerCase()
+			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.213:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
 		return(
 			<div className="home">
@@ -88,28 +100,32 @@ class Home extends Component {
 				<Canvas 
 					height={this.state.height}
 					width={this.state.width}
-					isGameOver={this.props.gameOver}
+					isGameOver={this.state.gameOver}
 					gameOver={this.gameOver.bind(this)}
 					isPlaying={this.props.gameIsStarted}
 					isPlaying={this.state.isPlaying}
 					yDir={this.state.yDir}
 					yDir2={this.state.yDir2}
-					is2Player={this.state.is2Player}
+					is2Player={this.props.players.length == 2}
 					numOfPlayers={this.props.players.length}/>
 					<div className="code">
 					<div className="headerContainer">
 					{uri && !this.props.gameIsStarted && this.props.players.length < 2 &&
-						<img className="qr" src={uri} />
+						<div className="qr">
+							<p>Open the camera on your phone <br/>and focus on the QR code</p>
+							<img className="qrCode" src={uri} />
+							<p>Otherwise just go to:<br/><span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>
+							
+						</div>
 					}
 					{!this.props.gameIsStarted && this.props.players.length >= 2 &&
-						<h4 className="qr">Someone Press play!</h4>
+						<h4 className="qr">Press play to start</h4>
 					}
 					{!this.props.gameIsStarted && this.props.players.length < 2 &&
 						<div>
-							<p className="players">2 players, your phones are the controllers.</p>
-							<p>Scan the QR code or go to:</p>
+							<p className="players"><span className="instructions">PingP (1-2 players)</span></p>
+							<p className="instructions"></p>
 							
-							<p><span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>
 						</div>
 					}
 					{this.state.countdown &&

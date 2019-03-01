@@ -2,6 +2,7 @@
 const initialState = {
   gameIsStarted: false,
   gameOver: false,
+  winner: null,
 }
 
 export default (state = initialState, action) => {
@@ -15,6 +16,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         gameOver: action.payload,
+        winner: action.winner,
       }
     case 'NEW_GAME':
       return {

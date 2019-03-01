@@ -10,43 +10,105 @@
 	right:0;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 	display: flex;
-	p, h3{
-		font-size: 24px;
-		transition: all 0.1s linear;
-		text-align: center;
-		color:white;
-	}
-	p{
-		color:#a6a6a6;
-	}
-	.mobileInstructions{
-		margin-top:-100px;
+	color:#f7f7f7;
+	.buttonSetMobile{
+		display: flex;
+		flex-direction: row;
 	}
 	.buttonMobile{
-		position: fixed;
-		bottom:10px;
-		left:10px;
-		right:10px;
-		height:50px;
-		border:2px solid #f7f7f7;
+		font-size: 30px;
+		margin:15px;
+		height:70px;
+		min-width:70px;
+		border: 3px solid #101010;
 		align-items: center;
-		justify-content: center;
-		color:#f7f7f7;
-		padding:10px;
-		text-align: center;
-	}
-	.quitButtonMobile{
-		position: fixed;
-		bottom:70px;
-		left:10px;
-		right:10px;
-		height:50px;
-		/* border:2px solid #f7f7f7; */
-		align-items: center;
+		display: flex;
 		justify-content: center;
 		color:#a6a6a6;
+		text-align: center;
+		img{
+			width:20px;
+			height:25px;
+			&.play{
+				margin-left:5px;
+			}
+		}
+		p{
+			margin-top:7px;
+			line-height: 2;
+			text-align: center;
+			color:#dd0101;
+			font-size: 30px;
+		}
+		&.warning{
+			border: 3px solid #dd0101;
+		}
+
+	}
+	.headerMobile{
+		display: flex;
+		flex:1;
+		font-weight: bold;
+		color:#101010;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+
+		font-size: 30px;
+	}
+
+	.gamePadContainer{
+		flex:1;
+		display: flex;
+		flex:1;
+		width:100%;
 		padding:10px;
+		box-sizing: border-box;
+		.gamePad{
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width:100%;
+			border:3px solid #a6a6a6;
+		}
+		.playerResult{
+			font-size: 30px;
+		}
+		
+	}
+	.info{
+		background:rgba(255,255,255,0.9);
+		
+		position: relative;
+		width:100%;
+		display: flex;
+		flex-direction: column;
+		margin:0;
 		text-align: center;
 	}
+	.instructionsMobile{
+		position: absolute;
+		top:10px;
+		left:0;
+		color:#a6a6a6;
+		font-size: 20px;
+		text-align: center;
+		width:100%;
+	}
+	.pausePlay{
+		/* position: absolute;
+		top:0;
+		left:0; */
+	}
+	.quit{
+		/* position: absolute;
+		top:0;
+		right:0; */
+	}
+	
+
+	
 }

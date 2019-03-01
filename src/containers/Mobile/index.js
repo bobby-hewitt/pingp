@@ -6,7 +6,7 @@ import './style.scss'
 import SocketListener from '../SocketListener'
 import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket } from '../../sockets/player'
 import { setSelf  } from '../../actions/player'
-import { startGame } from '../../actions/gameplay'
+import { startGame, setGameOver } from '../../actions/gameplay'
 
 class Mobile extends Component {
 
@@ -80,39 +80,44 @@ class Mobile extends Component {
 		return(
 			<div className="mobile">
 				<SocketListener />
-				{!this.props.gameOver &&
-					<div className="mobileInstructions">
-						<h3>Player {JSON.stringify(this.props.playerNumber)}</h3>
-						<p >Tilt phone to control paddle</p>
-					</div>
-				}
-				{this.props.gameOver &&
-					<div className="mobileInstructions">
-						<h3>Game over</h3>
-						<p >Restart or quit game</p>
-					</div>
-				}
-				<div className="quitButtonMobile" onClick={quitGameSocket.bind(this, this)} >
-					<h6>Quit game</h6>
-				</div>
-				{!this.props.gameIsStarted && !this.props.gameOver &&
- 					<div className="buttonMobile" onClick={startGameSocket.bind(this, this)} >
-						<h6>Play</h6>
-					</div>
-				}
-				{this.props.gameIsStarted && !this.props.gameOver &&
-					<div className="buttonMobile" onClick={startGameSocket.bind(this, this)} >
-						<h6>Pause</h6>
-					</div>
-				}
-				{this.props.gameOver &&
-					<div className="buttonMobile" onClick={restartGameSocket.bind(this, this)} >
-						<h6>Restart game</h6>
-					</div>
-				}
-
+				<div className="info">
 					
-			
+					{this.props.gameOver &&
+						<div className="mobileInstructions">
+							<p className="headerMobile">Game over</p>
+						</div>
+					}
+					<div className="buttonSetMobile">
+						<div className="pausePlay buttonMobile">
+							{!this.props.gameIsStarted && !this.props.gameOver &&
+								<img src={require('assets/images/playBlack.png')} className="play" onClick={startGameSocket.bind(this, this)}/>
+							}
+							{this.props.gameIsStarted && !this.props.gameOver &&
+								<img src={require('assets/images/pauseBlack.png')} onClick={startGameSocket.bind(this, this)}/>
+							}
+							{this.props.gameOver &&
+								<img src={require('assets/images/playBlack.png')} className="play" onClick={restartGameSocket.bind(this, this)}/>
+							}
+						</div>
+						{!this.props.gameOver &&
+						<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
+						}
+						<div className="buttonMobile warning quit" onClick={quitGameSocket.bind(this, this)} >
+							<p>Quit</p>
+						</div>	
+				
+					</div>
+					
+				</div>
+				
+				<div className="gamePadContainer">
+						<div className="gamePad">
+							<p className="instructionsMobile">Tilt phone to control paddle</p>
+							{this.props.gameOver &&
+								<p className="playerResult">{this.props.winner.indexOf(this.props.playerNumber) > -1 ? 'You win' : 'You lose'}</p>
+							}
+						</div>
+				</div>
 			</div>
 		)
 	}
@@ -124,11 +129,13 @@ const mapStateToProps = state => ({
 	room: state.player.room,
 	playerNumber: state.player.playerNumber,
 	gameOver: state.gameplay.gameOver,
+	winner: state.gameplay.winner,
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   push: (path) => push(path),
   setSelf,
+  setGameOver,
   startGame,
 }, dispatch)
 

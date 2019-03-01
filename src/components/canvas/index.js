@@ -24,7 +24,7 @@ export default class Canvas extends Component {
 		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
 		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
 		//game
-		this.maxScore = 7;
+		this.maxScore = 1;
 		this.hasStarted = false;
 		this.state = {
 			player1Score: 0,
@@ -92,7 +92,7 @@ export default class Canvas extends Component {
 		if (this.props.isPlaying && !this.props.isGameOver){
 			this.hasStarted = true
 			this.updateBall()
-			if (this.props.is2Player) this.updatePlayer2()
+			if (this.props.numOfPlayers === 2) this.updatePlayer2()
 			this.updatePlayer()
 		} else if (!this.props.isPlaying && !this.hasStarted){
 			this.updatePlayer2()
@@ -127,12 +127,12 @@ export default class Canvas extends Component {
 		//ball has gone of right edge of screen
 		if (this.ballX > window.innerWidth - this.ballSize ){
 			//if there is a second player let it go and reset
-			if (this.props.is2Player){
+			if (this.props.numOfPlayers === 2){
 				if (this.state.player1Score + 1 < this.maxScore){
 					this.setState({player1Score: this.state.player1Score + 1})
 				} else {
 					this.setState({player1Score: this.state.player1Score + 1}, () => {
-						this.props.gameOver()
+						this.props.gameOver('player1')
 					})
 				}
 				this.setup()
@@ -143,12 +143,12 @@ export default class Canvas extends Component {
 		//ball has gone off left edge of screen reset
 		} else if (this.ballX < 0){
 			//if there are 2 players count scores
-			if (this.props.is2Player){
+			if (this.props.numOfPlayers === 2){
 				if (this.state.player2Score + 1 < this.maxScore){
 					this.setState({player2Score: this.state.player2Score + 1})
 				} else {
 					this.setState({player2Score: this.state.player2Score + 1}, () => {
-						this.props.gameOver()
+						this.props.gameOver('player2')
 					})
 				}
 			}
@@ -263,7 +263,7 @@ export default class Canvas extends Component {
 					{this.props.numOfPlayers > 1 &&
 						<div className="row">
 							<p>{this.state.player1Score}</p>
-							<p>-</p>
+							<p> </p>
 							<p>{this.state.player2Score}</p>
 						</div>
 					}

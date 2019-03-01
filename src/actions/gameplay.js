@@ -6,11 +6,13 @@ export const startGame = (payload) => {
   }
 }
 
-export const setGameOver = (payload) => {
+export const setGameOver = (payload, winner) => {
+  console.log('SETTING GAME OVER', payload, winner)
   return dispatch => {
     dispatch({
       type: 'SET_GAME_OVER',
-      payload
+      payload,
+      winner: winner
     })
   }
 }

@@ -36,9 +36,9 @@ exports.startRound = function(socket){
 }
 
 
-exports.gameOver = function(socket){
+exports.gameOver = function(socket, data){
 	// console.log('starting round')
 	console.log('SENDING GAME OVER ')
-	socket.to(socket.id).emit('game-over');
+	socket.to(socket.id).emit('game-over', data);
 }
 
