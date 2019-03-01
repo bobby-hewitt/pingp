@@ -119,8 +119,8 @@ class Mobile extends Component {
 							{this.props.gameOver &&
 								<p className="playerResult">{this.props.winner.indexOf(this.props.playerNumber) > -1 ? 'You win' : 'You lose'}</p>
 							}
-							{this.props.powerUp &&
-								<div className={this.state.powerUpInUse ? '' : "powerUpContainer"} onClick={this.usePowerUp.bind(this)} >
+							{this.props.powerUp && !this.props.gameOver &&
+								<div className="powerUpContainer" onClick={this.usePowerUp.bind(this)} >
 									<p>
 										{
 											this.props.powerUp === 'invertOpponent' ? "Invert opponent's controls" : 

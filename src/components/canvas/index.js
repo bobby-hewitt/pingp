@@ -269,13 +269,13 @@ export default class Canvas extends Component {
 	}
 
 	drawPlayer(){
-		function Player(x, y, w, h) {
+		function Player(x, y, w, h, fill) {
 		    "use strict";
 		    this.x = (x === null) ? 20 : x;
 		    this.y = (y === null) ? 0 : y;
 		    this.draw = function(ctx) {
 		       ctx.rect(x,y,w,h);
-		       ctx.fillStyle = "#f7f7f7";
+		       ctx.fillStyle = '#f7f7f7';
 		       ctx.fill();
 		    }
 		}
