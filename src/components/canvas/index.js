@@ -27,7 +27,7 @@ export default class Canvas extends Component {
 		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
 		// this.ballXSpeed = -5;
 		//game
-		this.maxScore = 1;
+		this.maxScore = 7;
 		this.hasStarted = false;
 		this.state = {
 			player1PowerUp: false,
