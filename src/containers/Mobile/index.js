@@ -34,6 +34,7 @@ class Mobile extends Component {
 		if (!np.playerNumber && this.props.playerNumber){
 			this.props.push('not-found')
 		}
+
 	}
 
 	componentDidMount(){

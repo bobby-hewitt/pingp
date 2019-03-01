@@ -299,7 +299,7 @@ export default class Canvas extends Component {
 			}
 			const normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
-			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed > 8){
+			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
 				this.powerUp(1)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir / 3
@@ -317,10 +317,10 @@ export default class Canvas extends Component {
 		if (this.ballY > top2 && this.ballY < bottom2){
 			this.ballDirX *= -1
 			// establish player speed 
-			const normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
+			const normalisedSpeed = this.props.yDir2 > 0 ? this.props.yDir2 : this.props.yDir2 * -1
 			//changes ball y speed if paddle is moving on impact
 
-			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed > 8){
+			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
 				this.powerUp(2)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir2 / 3
