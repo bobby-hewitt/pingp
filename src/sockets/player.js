@@ -16,7 +16,7 @@ function subscribeToPlayerEvents(self, cb) {
 }
 
 function getPowerup(){
-	let powerups = ['invertOpponent', 'offYourLine', 'multiBall']
+	let powerups = ['invertOpponent']
     let r = Math.floor(Math.random() * powerups.length)
     return powerups[r]
 }

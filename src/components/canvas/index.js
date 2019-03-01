@@ -74,7 +74,7 @@ export default class Canvas extends Component {
 		this.setState({[type]: true}, () => {
 			setTimeout(() => {
 				this.setState({[type]: false})
-			},300)
+			},200)
 		})
 		
 	}
@@ -130,6 +130,35 @@ export default class Canvas extends Component {
 	}
 
 	drawBoard(){
+		//player 1 powerup
+		if (this.props.player1PowerUp === 'invertOpponent'){
+			let drawing = new Image() 
+			drawing.src = require('assets/images/invertOpponent.png')
+			this.ctx.drawImage(drawing,20,20, 30, 60);
+		} else if (this.props.player1PowerUp === 'multiBall'){
+			let drawing = new Image() 
+			drawing.src = require('assets/images/multiBall.png')
+			this.ctx.drawImage(drawing,20,20, 50, 50);
+		} else if (this.props.player1PowerUp === 'offYourLine'){
+			let drawing = new Image() 
+			drawing.src = require('assets/images/offYourLine.png')
+			this.ctx.drawImage(drawing,20,20, 70, 30);
+		}
+		// player 2 powerup
+		if (this.props.player2PowerUp === 'invertOpponent'){
+			let drawing = new Image() 
+			drawing.src = require('assets/images/invertOpponent.png')
+			this.ctx.drawImage(drawing,window.innerWidth -50,20, 30, 60);
+		} else if (this.props.player2PowerUp === 'multiBall'){
+			let drawing = new Image() 
+			drawing.src = require('assets/images/multiBall.png')
+			this.ctx.drawImage(drawing,window.innerWidth -70,20, 50, 50);
+		} else if (this.props.player2PowerUp === 'offYourLine'){
+			let drawing = new Image() 
+			drawing.src = require('assets/images/offYourLine.png')
+			this.ctx.drawImage(drawing,window.innerWidth -90,20, 70, 30);
+		}
+
 		this.ctx.beginPath();
 		this.ctx.setLineDash([15, 15]);
 		this.ctx.strokeStyle = '#555';
@@ -199,21 +228,39 @@ export default class Canvas extends Component {
 
 	updatePlayer(){
 		//dont let player go beyond boundaries of the screen
-		this.playerY =  
+		if (this.props.player2PowerUp === 'invertOpponent'){
+			this.playerY =  
+			(this.playerY + this.props.yDir) > window.innerHeight - this.playerHeight ?
+				window.innerHeight - this.playerHeight : 
+			(this.playerY + this.props.yDir) <= 0 ?
+				0 : this.playerY + this.props.yDir
+		} else {
+			this.playerY =  
 			(this.playerY - this.props.yDir) > window.innerHeight - this.playerHeight ?
 				window.innerHeight - this.playerHeight : 
 			(this.playerY - this.props.yDir) <= 0 ?
-				0 :
-				this.playerY - this.props.yDir
+				0 : this.playerY - this.props.yDir
+		}
 	}
+
 	updatePlayer2(){
 		//dont let player go beyond boundaries of the screen
-		this.player2Y =  
+		if (this.props.player1PowerUp === 'invertOpponent'){
+			this.player2Y =  
+			(this.player2Y + this.props.yDir2) > window.innerHeight - this.playerHeight ?
+				window.innerHeight - this.playerHeight : 
+			(this.player2Y + this.props.yDir2) <= 0 ?
+				0 : this.player2Y + this.props.yDir2 
+		} else {
+			this.player2Y =  
 			(this.player2Y - this.props.yDir2) > window.innerHeight - this.playerHeight ?
 				window.innerHeight - this.playerHeight : 
 			(this.player2Y - this.props.yDir2) <= 0 ?
-				0 :
-				this.player2Y - this.props.yDir2
+				0 : this.player2Y - this.props.yDir2 
+		}
+
+		
+				
 	}
 
 	drawPlayer(){
@@ -247,7 +294,7 @@ export default class Canvas extends Component {
 			}
 			let normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
-			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
+			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight ){
 				this.powerUp(1)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir / 3
@@ -268,7 +315,7 @@ export default class Canvas extends Component {
 			let normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
 
-			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
+			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight ){
 				this.powerUp(2)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir2 / 3

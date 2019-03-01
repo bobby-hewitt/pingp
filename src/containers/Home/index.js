@@ -13,7 +13,7 @@ class Home extends Component {
 	constructor(props){
 		super(props)
 		this.timeouts = []
-		this.powerUpDuration = 2000
+		this.powerUpDuration = 5000
 		this.player1PowerUpTimeout = null
 		this.player1PowerUpTimeout = null
 		this.speed = 1
@@ -155,11 +155,13 @@ class Home extends Component {
 			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('http://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
 			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.213:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
-		console.log('player1 power up', this.props.player1PowerUp)
+		
 		return(
 			<div className="home">
 				<SocketListener isHost/>
 				<Canvas
+					player1PowerUp={this.props.player1PowerUp}
+					player2PowerUp={this.props.player2PowerUp}
 					scored={this.scored.bind(this)}
 					powerUpGained={this.powerUpGained.bind(this)}
 					height={this.state.height}
