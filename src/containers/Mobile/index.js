@@ -42,7 +42,6 @@ class Mobile extends Component {
 			let x = this.findLimit(orientation.gamma)
 			if (y !== this.state.yDir || x !== this.state.xDir){				
 				let dirs = {
-					x: x,
 					y: y,
 					playerNumber: this.props.playerNumber
 				}

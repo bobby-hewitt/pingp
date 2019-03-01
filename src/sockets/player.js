@@ -22,14 +22,10 @@ function getPowerup(){
 }
 
 function powerUpGained(self, data){
-	console.log('GAINED POWERUP')
-	
 	self.props.powerUpGained(getPowerup())
 }
 
-function powerUpUsedSocket(data, self){
-	console.log('USER POWERUP')
-	
+function powerUpUsedSocket(data, self){	
 	emit('power-up-used', data)
 	self.props.powerUpUsed()
 }
@@ -49,24 +45,18 @@ function gameOver(self, data){
 
 
 function successJoiningRoom(self, data){
-	console.log('success joining room', data)
-	// self.props.push('player/waiting')
-	// console.log(data)
 	self.props.setPlayerRoom(data.result)
 	self.props.setPlayerNumber(data.playerNumber)
-	// window.localStorage.room = data
 }
 function errorJoiningRoom(){
-	console.log('error joining room')
+
 }
 
 function startRound(self){
-	console.log('starting round')
 	self.props.push('player/buzzer')
 }
 
 function buzz(self){
-	console.log('self', self.props)
 	let data = {
 		room: self.props.room.long,
 		player: self.props.self,
@@ -77,7 +67,6 @@ function buzz(self){
 }
 
 function sendOrientation(coords, self){
-	console.log(self)
 	if (self.props.room){
 		let data = {
 			room: self.props.room.long,
@@ -94,26 +83,20 @@ function restartGame(cb){
 
 // emit
 function startGameSocket(self){
-	console.log('EMITTING start game')
 	self.props.startGame()
 	emit('start-game', self.props.room.long)
 }
 
 // emit
 function quitGameSocket(self){
-	console.log('EMITTING start game')
 	self.props.startGame()
 	emit('quit-game-player', self.props.room.long)
 }
 
 
 function restartGameSocket(self){
-	console.log('EMITTING restart game')
-	// self.props.startGame()
 	emit('restart-game', self.props.room.long)
-	self.props.setGameOver(false)
-
-	
+	self.props.setGameOver(false)	
 }
 
 
@@ -122,15 +105,12 @@ function gameStarted(cb){
 }
 
 function joinRoom(data, self){
-	// console.log('joining')
-	// console.log(roomCode)
 	data.id = socket.id
 	self.props.setSelf(data)
 	emit('player-join-room', data)
 }
 
 function emit(action, data){
-	// data.room = window.localStorage.room
 	socket.emit(action, data)
 }
 

@@ -8,6 +8,7 @@ export default class Canvas extends Component {
 		// canvas
 		this.ctx = null;
 		//player
+		this.balls = []
 		this.playerHeight = 120;
 		this.playerWidth = 7;
 		this.playerX = 20;
@@ -52,6 +53,10 @@ export default class Canvas extends Component {
 			this.ballX = window.innerWidth / 2;
 			this.ballY = window.innerHeight / 2 -100;
 			this.resetScores()
+		}
+		// handle multi ball
+		if ((this.props.player1PowerUp !== 'multiBall' && np.player1PowerUp === 'multiBall') || (this.props.player2PowerUp !== 'multiBall' && np.player2PowerUp === 'multiBall')){
+
 		}
 		//let players move between games
 		if (!this.props.isGameOver && np.isGameOver){
@@ -131,33 +136,33 @@ export default class Canvas extends Component {
 
 	drawBoard(){
 		//player 1 powerup
-		if (this.props.player1PowerUp === 'invertOpponent'){
-			let drawing = new Image() 
-			drawing.src = require('assets/images/invertOpponent.png')
-			this.ctx.drawImage(drawing,20,20, 30, 60);
-		} else if (this.props.player1PowerUp === 'multiBall'){
-			let drawing = new Image() 
-			drawing.src = require('assets/images/multiBall.png')
-			this.ctx.drawImage(drawing,20,20, 50, 50);
-		} else if (this.props.player1PowerUp === 'offYourLine'){
-			let drawing = new Image() 
-			drawing.src = require('assets/images/offYourLine.png')
-			this.ctx.drawImage(drawing,20,20, 70, 30);
-		}
-		// player 2 powerup
-		if (this.props.player2PowerUp === 'invertOpponent'){
-			let drawing = new Image() 
-			drawing.src = require('assets/images/invertOpponent.png')
-			this.ctx.drawImage(drawing,window.innerWidth -50,20, 30, 60);
-		} else if (this.props.player2PowerUp === 'multiBall'){
-			let drawing = new Image() 
-			drawing.src = require('assets/images/multiBall.png')
-			this.ctx.drawImage(drawing,window.innerWidth -70,20, 50, 50);
-		} else if (this.props.player2PowerUp === 'offYourLine'){
-			let drawing = new Image() 
-			drawing.src = require('assets/images/offYourLine.png')
-			this.ctx.drawImage(drawing,window.innerWidth -90,20, 70, 30);
-		}
+		// if (this.props.player1PowerUp === 'invertOpponent'){
+		// 	let drawing = new Image() 
+		// 	drawing.src = require('assets/images/invertOpponent.png')
+		// 	this.ctx.drawImage(drawing,20,20, 30, 60);
+		// } else if (this.props.player1PowerUp === 'multiBall'){
+		// 	let drawing = new Image() 
+		// 	drawing.src = require('assets/images/multiBall.png')
+		// 	this.ctx.drawImage(drawing,20,20, 50, 50);
+		// } else if (this.props.player1PowerUp === 'offYourLine'){
+		// 	let drawing = new Image() 
+		// 	drawing.src = require('assets/images/offYourLine.png')
+		// 	this.ctx.drawImage(drawing,20,20, 70, 30);
+		// }
+		// // player 2 powerup
+		// if (this.props.player2PowerUp === 'invertOpponent'){
+		// 	let drawing = new Image() 
+		// 	drawing.src = require('assets/images/invertOpponent.png')
+		// 	this.ctx.drawImage(drawing,window.innerWidth -50,20, 30, 60);
+		// } else if (this.props.player2PowerUp === 'multiBall'){
+		// 	let drawing = new Image() 
+		// 	drawing.src = require('assets/images/multiBall.png')
+		// 	this.ctx.drawImage(drawing,window.innerWidth -70,20, 50, 50);
+		// } else if (this.props.player2PowerUp === 'offYourLine'){
+		// 	let drawing = new Image() 
+		// 	drawing.src = require('assets/images/offYourLine.png')
+		// 	this.ctx.drawImage(drawing,window.innerWidth -90,20, 70, 30);
+		// }
 
 		this.ctx.beginPath();
 		this.ctx.setLineDash([15, 15]);

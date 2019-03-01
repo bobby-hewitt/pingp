@@ -45,29 +45,26 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(np){
-		//
-		if (!this.props.player1PowerUp && np.player1PowerUp ){
-			clearTimeout(this.player1PowerUpTimeout)
-			this.player1PowerUpTimeout = setTimeout(() => {
-				console.log('clearing power up')
-				let obj = {
-					playerNumber: 1,
-					powerUp: false
-				}
-				this.props.powerUpUsedGameplay(obj)
-			}, this.powerUpDuration)
-		}
-		if (!this.props.player2PowerUp && np.player2PowerUp ){
-			clearTimeout(this.player2PowerUpTimeout)
-			this.player2PowerUpTimeout = setTimeout(() => {
-				console.log('clearing power up')
-				let obj = {
-					playerNumber: 2,
-					powerUp: false
-				}
-				this.props.powerUpUsedGameplay(obj)
-			}, this.powerUpDuration)
-		}
+		// if (!this.props.player1PowerUp && np.player1PowerUp ){
+		// 	clearTimeout(this.player1PowerUpTimeout)
+		// 	this.player1PowerUpTimeout = setTimeout(() => {
+		// 		let obj = {
+		// 			playerNumber: 1,
+		// 			powerUp: false
+		// 		}
+		// 		this.props.powerUpUsedGameplay(obj)
+		// 	}, this.powerUpDuration)
+		// }
+		// if (!this.props.player2PowerUp && np.player2PowerUp ){
+		// 	clearTimeout(this.player2PowerUpTimeout)
+		// 	this.player2PowerUpTimeout = setTimeout(() => {
+		// 		let obj = {
+		// 			playerNumber: 2,
+		// 			powerUp: false
+		// 		}
+		// 		this.props.powerUpUsedGameplay(obj)
+		// 	}, this.powerUpDuration)
+		// }
 		//new player 1 data
 		if (this.state.yDir !== np.coords.y){
 			this.setState({yDir:np.coords.y})
@@ -121,7 +118,6 @@ class Home extends Component {
 	}
 
 	powerUpGained(player){
-		console.log('in home power up gained')
 		let obj = {
 			playerData: this.props.players[player-1],
 			playerNumber: player
@@ -129,11 +125,9 @@ class Home extends Component {
 		if(this.props.players[player-1]){
 			powerUpGained(obj)
 		}
-		// console.log('player gained powerup', player, this.props.players[player-1])
 	}
 
 	scored(){
-		console.log('resetting power ups')
 		//reset power ups
 		const obj = {
 			playerNumber: 1,
