@@ -35,6 +35,11 @@ exports.startRound = function(socket){
 	socket.to(socket.id).emit('start-round');
 }
 
+exports.powerUpGained = function(socket, data){
+	console.log('power up gained', data.playerData.id)
+	socket.to(data.playerData.id).emit('power-up-gained', data.playerNumber);
+}
+
 
 exports.gameOver = function(socket, data){
 	// console.log('starting round')

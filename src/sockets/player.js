@@ -12,6 +12,26 @@ function subscribeToPlayerEvents(self, cb) {
 	socket.on('host-quit', hostQuit.bind(this, self))
 	socket.on('restart-game', restartGame.bind(this, cb))
 	socket.on('game-over', gameOver.bind(this, self))
+	socket.on('power-up-gained', powerUpGained.bind(this, self))
+}
+
+function getPowerup(){
+	let powerups = ['invertOpponent', 'offYourLine', 'multiBall']
+    let r = Math.floor(Math.random() * powerups.length)
+    return powerups[r]
+}
+
+function powerUpGained(self, data){
+	console.log('GAINED POWERUP')
+	
+	self.props.powerUpGained(getPowerup())
+}
+
+function powerUpUsedSocket(data, self){
+	console.log('USER POWERUP')
+	
+	emit('power-up-used', data)
+	self.props.powerUpUsed()
 }
 
 function roomFull(self){
@@ -115,6 +135,7 @@ function emit(action, data){
 }
 
 export { 
+	powerUpUsedSocket,
 	restartGameSocket,
 	quitGameSocket,
 	startGameSocket,

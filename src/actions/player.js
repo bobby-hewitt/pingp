@@ -8,6 +8,25 @@ export const setPlayerRoom = (payload) => {
   }
 }
 
+export const powerUpGained = (payload) => {
+  return dispatch => {
+    dispatch({
+      type: 'POWER_UP_GAINED',
+      payload
+    })
+  }
+}
+
+export const powerUpUsed = (payload) => {
+  console.log('POWERUP PAYLOAD', payload)
+  return dispatch => {
+    dispatch({
+      type: 'POWER_UP_USED',
+      payload
+    })
+  }
+}
+
 export const setPlayerNumber = (payload) => {
   console.log('SETTING PLAYER Number')
   return dispatch => {

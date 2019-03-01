@@ -1,7 +1,7 @@
 import openSocket from 'socket.io-client';
 // const  socket = openSocket('172.23.150.213:9000');
 const  socket = openSocket('https://bping.herokuapp.com');
-
+const POWER_UP_DURATION = 5000
 function subscribeToHostEvents(self, cb) {
 	console.log('SUBSCRIBING TO HOST')
 	socket.emit('host-connected');
@@ -13,6 +13,18 @@ function subscribeToHostEvents(self, cb) {
   	socket.on('device-orientation-sending', gotCoords.bind(this, cb))
   	socket.on('quit-game-player', quitGamePlayer.bind(this, cb))
   	socket.on('restart-game', restartGame.bind(this, cb))
+  	socket.on('power-up-used', powerUpUsed.bind(this, self))
+  	
+}
+
+function powerUpUsed(self, data){
+	// console.log('POWER UP USED', data, self)
+	self.props.powerUpUsedGameplay(data)
+}
+
+function powerUpGained(data, self){
+	console.log('emitting')
+	socket.emit('power-up-gained', data)
 }
 
 function gotCoords(cb, data){
@@ -69,6 +81,7 @@ function playerResponded(self, data){
 }
 
 export { 
+	powerUpGained,
 	gameOver,
 	subscribeToHostEvents,
 	startRound

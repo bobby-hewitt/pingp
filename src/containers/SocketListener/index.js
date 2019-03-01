@@ -6,8 +6,8 @@ import io from 'socket.io-client';
 import {subscribeToPlayerEvents} from '../../sockets/player'
 import {subscribeToHostEvents} from '../../sockets/host'
 import { setRoomCode, addPlayer, startRoundHost, setResponses, setCoords1, setCoords2 } from '../../actions/host'
-import { setPlayerRoom, setSelf, setPlayerNumber } from '../../actions/player'
-import { startGame, setGameOver } from '../../actions/gameplay'
+import { setPlayerRoom, setSelf, setPlayerNumber, powerUpGained, powerUpUsed } from '../../actions/player'
+import { startGame, setGameOver, powerUpUsedGameplay } from '../../actions/gameplay'
 
 
 class SocketListener extends Component {
@@ -41,6 +41,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setRoomCode,
+  powerUpUsedGameplay,
+  powerUpGained,
+  powerUpUsed,
   startGame,
   setGameOver,
   setPlayerNumber,

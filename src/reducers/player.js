@@ -1,11 +1,22 @@
 
 const initialState = {
   room: null,
-  playerNumber: null
+  playerNumber: null,
+  powerUp: false
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case 'POWER_UP_GAINED':
+      return {
+        ...state,
+        powerUp: action.payload,
+      }
+    case 'POWER_UP_USED':
+      return {
+        ...state,
+        powerUp: false,
+      }
     case 'SET_PLAYER_ROOM':
       return {
         ...state,

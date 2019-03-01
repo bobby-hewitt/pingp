@@ -17,6 +17,15 @@ export const setGameOver = (payload, winner) => {
   }
 }
 
+export const powerUpUsedGameplay = (payload) => {
+  return dispatch => {
+    dispatch({
+      type: payload.playerNumber === 1 ? 'SET_POWER_UP_PLAYER_1' : 'SET_POWER_UP_PLAYER_2',
+      payload: payload.powerUp,
+    })
+  }
+}
+
 
 export const leaveGame = (payload) => {
   return dispatch => {

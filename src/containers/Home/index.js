@@ -5,14 +5,17 @@ import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from '../SocketListener'
 import Canvas from 'components/canvas'
-import { gameOver } from 'sockets/host'
-import { setGameOver } from 'actions/gameplay'
+import { gameOver, powerUpGained } from 'sockets/host'
+import { setGameOver, powerUpUsedGameplay } from 'actions/gameplay'
 class Home extends Component {
 
 
 	constructor(props){
 		super(props)
 		this.timeouts = []
+		this.powerUpDuration = 2000
+		this.player1PowerUpTimeout = null
+		this.player1PowerUpTimeout = null
 		this.speed = 1
 		this.state = {
 			height: window.innerHeight,
@@ -33,7 +36,38 @@ class Home extends Component {
 		});
 	}
 
+	componentWillUnmount(){
+		clearTimeout(this.player1PowerUpTimeout)
+		clearTimeout(this.player2PowerUpTimeout)
+		for (var i = 0; i < this.timeouts.length; i++){
+			clearTimeout(this.timeouts[i])
+		}
+	}
+
 	componentWillReceiveProps(np){
+		//
+		if (!this.props.player1PowerUp && np.player1PowerUp ){
+			clearTimeout(this.player1PowerUpTimeout)
+			this.player1PowerUpTimeout = setTimeout(() => {
+				console.log('clearing power up')
+				let obj = {
+					playerNumber: 1,
+					powerUp: false
+				}
+				this.props.powerUpUsedGameplay(obj)
+			}, this.powerUpDuration)
+		}
+		if (!this.props.player2PowerUp && np.player2PowerUp ){
+			clearTimeout(this.player2PowerUpTimeout)
+			this.player2PowerUpTimeout = setTimeout(() => {
+				console.log('clearing power up')
+				let obj = {
+					playerNumber: 2,
+					powerUp: false
+				}
+				this.props.powerUpUsedGameplay(obj)
+			}, this.powerUpDuration)
+		}
 		//new player 1 data
 		if (this.state.yDir !== np.coords.y){
 			this.setState({yDir:np.coords.y})
@@ -83,8 +117,35 @@ class Home extends Component {
 	}
 
 	gameOver(winner){
-
 		gameOver(this, winner)
+	}
+
+	powerUpGained(player){
+		console.log('in home power up gained')
+		let obj = {
+			playerData: this.props.players[player-1],
+			playerNumber: player
+		}
+		if(this.props.players[player-1]){
+			powerUpGained(obj)
+		}
+		// console.log('player gained powerup', player, this.props.players[player-1])
+	}
+
+	scored(){
+		console.log('resetting power ups')
+		//reset power ups
+		const obj = {
+			playerNumber: 1,
+			powerUp: false
+		}
+		
+		const obj2 = {
+			playerNumber: 2,
+			powerUp: false
+		}
+		this.props.powerUpUsedGameplay(obj)
+		this.props.powerUpUsedGameplay(obj2)	
 	}
 
 	render(){
@@ -94,10 +155,13 @@ class Home extends Component {
 			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('http://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
 			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.213:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
+		console.log('player1 power up', this.props.player1PowerUp)
 		return(
 			<div className="home">
 				<SocketListener isHost/>
-				<Canvas 
+				<Canvas
+					scored={this.scored.bind(this)}
+					powerUpGained={this.powerUpGained.bind(this)}
 					height={this.state.height}
 					width={this.state.width}
 					isGameOver={this.state.gameOver}
@@ -152,6 +216,8 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => ({
+	player1PowerUp: state.gameplay.player1PowerUp,
+	player2PowerUp: state.gameplay.player2PowerUp,
 	gameIsStarted: state.gameplay.gameIsStarted,
 	roomCode: state.host.roomCode,
 	coords: state.host.coords,
@@ -163,6 +229,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   push: (path) => push(path),
   setGameOver,
+  powerUpUsedGameplay,
 }, dispatch)
 
 export default connect(

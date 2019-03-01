@@ -37,6 +37,8 @@ io.on('connection', function(socket){
   socket.on('disconnect', disconnect.bind(this, socket));
   socket.on('host-connected', HostConnection.hostConnected.bind(this, socket))
   socket.on('device-orientation', PlayerConnection.deviceOrientation.bind(this, socket))
+  socket.on('power-up-gained', HostConnection.powerUpGained.bind(this, socket))
+  socket.on('power-up-used', PlayerConnection.powerUpUsed.bind(this, socket))
   // socket.on('player-join-room', PlayerConnection.playerJoinRoom.bind(this, socket))
   socket.on('player-join-room', checkRoomNumbers.bind(this, socket))
   // socket.on('start-round', HostConnection.startRound.bind(this, socket))
@@ -61,6 +63,7 @@ function checkRoomNumbers(socket, playerData){
 				console.log('number in room < 2')
 				socket.join(result.long)	
 				// playerData
+				playerData.id = socket.id
 				socket.broadcast.to(result.long).emit('player-joined', playerData);
 				result.player = playerData
 				result.playerNumber = numberInRoom

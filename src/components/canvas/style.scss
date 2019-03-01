@@ -32,3 +32,17 @@
 	z-index: 1;
 	transform: translateX(-50%);
 }
+
+.powerUpPlayer1{
+	position: absolute;
+	top:0;
+	left:0;
+	z-index: 1;
+}
+
+.powerUpPlayer2{
+	position: absolute;
+	top:0;
+	right:0;
+	z-index: 1;
+}

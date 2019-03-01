@@ -18,15 +18,20 @@ export default class Canvas extends Component {
 		//ball
 		this.ballSize = 5;
 		this.ballX = window.innerWidth / 2;
-		this.ballY = window.innerHeight / 2 -100;
+		// this.ballY = window.innerHeight / 2 -100;
+		this.ballY = window.innerHeight / 2 ;
 		this.ballDirX = 1;
 		this.ballDirY = 1;
-		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
-		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
+		// this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
+		this.ballYSpeed = 0;
+		// this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
+		this.ballXSpeed = -5;
 		//game
 		this.maxScore = 1;
 		this.hasStarted = false;
 		this.state = {
+			player1PowerUp: false,
+			player2PowerUp: false,
 			player1Score: 0,
 			player2Score: 0,
 		}
@@ -60,6 +65,18 @@ export default class Canvas extends Component {
 			this.ballX = window.innerWidth / 2;
 			this.ballY = window.innerHeight / 2 -100;
 		}
+	}
+
+	powerUp(player){
+		let type = player === 1 ? 'player1PowerUp' : 'player2PowerUp'
+		// handle socket call for power up
+		this.props.powerUpGained(player)
+		this.setState({[type]: true}, () => {
+			setTimeout(() => {
+				this.setState({[type]: false})
+			},300)
+		})
+		
 	}
 
 
@@ -128,6 +145,7 @@ export default class Canvas extends Component {
 		if (this.ballX > window.innerWidth - this.ballSize ){
 			//if there is a second player let it go and reset
 			if (this.props.numOfPlayers === 2){
+				this.props.scored()
 				if (this.state.player1Score + 1 < this.maxScore){
 					this.setState({player1Score: this.state.player1Score + 1})
 				} else {
@@ -142,6 +160,7 @@ export default class Canvas extends Component {
 			}
 		//ball has gone off left edge of screen reset
 		} else if (this.ballX < 0){
+			this.props.scored()
 			//if there are 2 players count scores
 			if (this.props.numOfPlayers === 2){
 				if (this.state.player2Score + 1 < this.maxScore){
@@ -226,8 +245,10 @@ export default class Canvas extends Component {
 			} else{
 				this.ballXSpeed += 1
 			}
+			let normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
-			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight){
+			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
+				this.powerUp(1)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir / 3
 				} else {
@@ -243,8 +264,12 @@ export default class Canvas extends Component {
 		let bottom2 = this.player2Y + this.playerHeight
 		if (this.ballY > top2 && this.ballY < bottom2){
 			this.ballDirX *= -1
+			// establish player speed 
+			let normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
-			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight){
+
+			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
+				this.powerUp(2)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir2 / 3
 				} else {
@@ -268,6 +293,12 @@ export default class Canvas extends Component {
 						</div>
 					}
 				</div>	
+				{this.state.player1PowerUp &&
+					<img className="powerUpPlayer1" style={{top: this.playerY + 35 +'px', left: this.playerX + 'px'}}src={require('assets/images/lightning.png')} />
+				}
+				{this.state.player2PowerUp &&
+					<img className="powerUpPlayer2" style={{top: this.player2Y + 35 +'px', left: this.player2X - 30 + 'px'}}src={require('assets/images/lightning.png')} />
+				}	
 			</div>
 		)
 	}

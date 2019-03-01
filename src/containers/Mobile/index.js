@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from '../SocketListener'
-import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket } from '../../sockets/player'
-import { setSelf  } from '../../actions/player'
+import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket, powerUpUsedSocket } from '../../sockets/player'
+import { setSelf, powerUpUsed  } from '../../actions/player'
 import { startGame, setGameOver } from '../../actions/gameplay'
 
 class Mobile extends Component {
@@ -76,17 +76,21 @@ class Mobile extends Component {
 		else return 21
 	}
 
+	usePowerUp(){
+		let obj = {
+			room: this.props.room,
+			playerNumber: this.props.playerNumber,
+			powerUp: this.props.powerUp
+		}
+		
+		powerUpUsedSocket(obj, this)
+	}
+
 	render(){
 		return(
 			<div className="mobile">
 				<SocketListener />
-				<div className="info">
-					
-					{this.props.gameOver &&
-						<div className="mobileInstructions">
-							<p className="headerMobile">Game over</p>
-						</div>
-					}
+				<div className="info">	
 					<div className="buttonSetMobile">
 						<div className="pausePlay buttonMobile">
 							{!this.props.gameIsStarted && !this.props.gameOver &&
@@ -100,21 +104,37 @@ class Mobile extends Component {
 							}
 						</div>
 						{!this.props.gameOver &&
-						<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
+							<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
+						}
+						{this.props.gameOver &&
+							<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
 						}
 						<div className="buttonMobile warning quit" onClick={quitGameSocket.bind(this, this)} >
 							<p>Quit</p>
 						</div>	
-				
-					</div>
-					
+					</div>	
 				</div>
-				
 				<div className="gamePadContainer">
 						<div className="gamePad">
 							<p className="instructionsMobile">Tilt phone to control paddle</p>
 							{this.props.gameOver &&
 								<p className="playerResult">{this.props.winner.indexOf(this.props.playerNumber) > -1 ? 'You win' : 'You lose'}</p>
+							}
+							{this.props.powerUp &&
+								<div className={this.state.powerUpInUse ? '' : "powerUpContainer"} onClick={this.usePowerUp.bind(this)} >
+									<p>
+										{
+											this.props.powerUp === 'invertOpponent' ? "Invert opponent's controls" : 
+											this.props.powerUp === 'multiBall' ? 'Multi ball' : 
+											this.props.powerUp === 'offYourLine' ? 'Come off your line' : 
+											''
+										}
+									</p>
+									{this.props.powerUp === 'multiBall' && <img className="powerUpImage" src={require('../../assets/images/multiBall.png')} />}
+									{this.props.powerUp === 'invertOpponent' && <img className="powerUpImage" src={require('../../assets/images/invertOpponent.png')} />}
+									{this.props.powerUp === 'offYourLine' && <img className="powerUpImage" src={require('../../assets/images/offYourLine.png')} />}
+
+								</div>
 							}
 						</div>
 				</div>
@@ -130,12 +150,14 @@ const mapStateToProps = state => ({
 	playerNumber: state.player.playerNumber,
 	gameOver: state.gameplay.gameOver,
 	winner: state.gameplay.winner,
+	powerUp: state.player.powerUp
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   push: (path) => push(path),
   setSelf,
   setGameOver,
+  powerUpUsed,
   startGame,
 }, dispatch)
 

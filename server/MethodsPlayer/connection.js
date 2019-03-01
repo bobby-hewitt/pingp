@@ -28,6 +28,11 @@ exports.startGame = function(socket, data){
 	socket.to(data).emit('start-game');
 }
 
+exports.powerUpUsed = function(socket, data){
+	// console.log('POWER UP USED', data.room)
+	socket.to(data.room.long).emit('power-up-used', data)
+}
+
 exports.restartGame = function(socket, data){
 	// console.log('STARTING GAME')
 	// socket.to(socket.id).emit('start-game');
