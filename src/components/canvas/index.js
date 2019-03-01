@@ -18,14 +18,14 @@ export default class Canvas extends Component {
 		//ball
 		this.ballSize = 5;
 		this.ballX = window.innerWidth / 2;
-		// this.ballY = window.innerHeight / 2 -100;
-		this.ballY = window.innerHeight / 2 ;
+		this.ballY = window.innerHeight / 2 -100;
+		// this.ballY = window.innerHeight / 2 ;
 		this.ballDirX = 1;
 		this.ballDirY = 1;
-		// this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
-		this.ballYSpeed = 0;
-		// this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
-		this.ballXSpeed = -5;
+		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
+		// this.ballYSpeed = 0;
+		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
+		// this.ballXSpeed = -5;
 		//game
 		this.maxScore = 1;
 		this.hasStarted = false;
