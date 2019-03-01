@@ -85,6 +85,7 @@ class Home extends Component {
 		}
 		//game over 
 		if (!this.props.gameOver && np.gameOver){
+			this.clearPowerUps()
 			this.setState({gameOver: true})
 		}
 		//stop game
@@ -127,7 +128,7 @@ class Home extends Component {
 		}
 	}
 
-	scored(){
+	clearPowerUps(){
 		//reset power ups
 		const obj = {
 			playerNumber: 1,
@@ -156,7 +157,7 @@ class Home extends Component {
 				<Canvas
 					player1PowerUp={this.props.player1PowerUp}
 					player2PowerUp={this.props.player2PowerUp}
-					scored={this.scored.bind(this)}
+					scored={this.clearPowerUps.bind(this)}
 					powerUpGained={this.powerUpGained.bind(this)}
 					height={this.state.height}
 					width={this.state.width}
