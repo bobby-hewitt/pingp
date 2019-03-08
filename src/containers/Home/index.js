@@ -20,8 +20,8 @@ class Home extends Component {
 		this.player1PowerUpTimeout = null
 		this.speed = 1
 		this.state = {
-			height: 666,
-			width:1000,
+			height: window.innerHeight,
+			width:window.innerWidth,
 			yDir: 0,
 			yDir2: 0,
 			is2Player: false,
@@ -40,10 +40,10 @@ class Home extends Component {
 
 
 		this.initialiseAnalytics()
-		// window.addEventListener("resize", () => {
-		// 	console.log(window.innerHeight, window.innerWidth)
-		// 	this.setState({height:window.innerHeight, width: window.innerWidth})
-		// });
+		window.addEventListener("resize", () => {
+			console.log(window.innerHeight, window.innerWidth)
+			this.setState({height:window.innerHeight, width: window.innerWidth})
+		});
 	}
 
 	initialiseAnalytics(){
@@ -226,7 +226,7 @@ class Home extends Component {
 					}
 					</div>
 				</div>
-				{window.innerHeight < 666 || window.innerWidth <1000 &&
+				{this.state.height < 666 || this.state.width <1000 &&
 					<div className="tooSmall">
 						<div>
 							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
