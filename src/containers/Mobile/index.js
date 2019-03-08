@@ -7,6 +7,7 @@ import SocketListener from '../SocketListener'
 import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket, powerUpUsedSocket } from '../../sockets/player'
 import { setSelf, powerUpUsed  } from '../../actions/player'
 import { startGame, setGameOver } from '../../actions/gameplay'
+import ReactGA from 'react-ga';
 
 class Mobile extends Component {
 
@@ -15,19 +16,28 @@ class Mobile extends Component {
 		this.state = {
 			xDir: 0,
 			yDir: 0,
+			dir: 'equal',
+			visualSpeed: 0,
 		}
+		this.speeds = ['-6','-5','-4','-3','-2','-1','0','1','2','3','4','5','6']
 	}
 
-	componentWillMount(){
+	componentWillMount(){ 
+		this.initialiseAnalytics()
 		let code = window.location.pathname.split('/')[2]
 		if (code){
+
 			let obj = {
 		      name: '',
 		      room: code.toUpperCase()
 		    }
 		    joinRoom(obj, this)
 		}
+	}
 
+	initialiseAnalytics(){
+ 		ReactGA.initialize('UA-135889592-1');
+		ReactGA.pageview('/player');
 	}
 
 	componentWillReceiveProps(np){
@@ -39,44 +49,35 @@ class Mobile extends Component {
 
 	componentDidMount(){
 		window.addEventListener('deviceorientation', (orientation) => {
-			let y = this.findLimit(orientation.beta)
-			let x = this.findLimit(orientation.gamma)
-			if (y !== this.state.yDir || x !== this.state.xDir){				
+			let {y, dir, visualSpeed } = this.findLimit(orientation.beta)
+			// let x = this.findLimit(orientation.gamma)
+
+			if (y !== this.state.yDir){				
 				let dirs = {
 					y: y,
 					playerNumber: this.props.playerNumber
 				}
 				sendOrientation(dirs, this)
-				this.setState({yDir: y, xDir: x})
+				this.setState({yDir: y, visualSpeed, dir})
 			}
 		})
 	}
 
 	findLimit(coord){
-		if (coord < -47.5) return -21
-		else if (coord < -42.5) return -19
-		else if (coord < -37.5) return -16
-		else if (coord < -32.5) return -13
-		else if (coord < -27.5) return -10
-		else if (coord < -22.5) return -8
-		else if (coord < -17.5) return -6
-		else if (coord < -12.5) return -4
-		else if (coord < -7.5) return -2
-		else if (coord < -2.5) return -1
-		else if (coord < 2.5) return 0
-		else if (coord < 7.5) return 1
-		else if (coord < 12.5) return 2
-		else if (coord < 17.5 ) return 4
-		else if (coord < 22.5 ) return 6
-		else if (coord < 27.5 ) return 8
-		else if (coord < 32.5 ) return 10
-		else if (coord < 37.5 ) return 13
-		else if (coord < 42.5 ) return 16
-		else if (coord < 47.5 ) return 19
-		else return 21
+		// if (coord < -27.5 + 45) return {y: -20, dir: 'down', visualSpeed: 5}
+		if (coord < -35 + 45) return {y: -12, dir: 'down', visualSpeed: 4}
+		else if (coord < -25 + 45) return {y: -9, dir: 'down', visualSpeed: 3}
+		else if (coord < -15 + 45) return {y: -6, dir: 'down', visualSpeed: 2}
+		else if (coord < -5 + 45) return {y: -3, dir: 'down', visualSpeed: 1}
+		else if (coord < 5 + 45) return {y: 0, dir: 'equal', visualSpeed: 0}
+		else if (coord < 15 + 45) return {y: 3, dir: 'up', visualSpeed: 1}
+		else if (coord < 25 + 45) return {y: 6, dir: 'up', visualSpeed: 2}
+		else if (coord < 35 + 45) return {y: 9, dir: 'up', visualSpeed: 3}
+		// else if (coord < 45 + 45) return {y: 16, dir: 'up', visualSpeed: 4}
+		else return {y: 12, dir: '+', dir: 'up', visualSpeed: 4}
 	}
 
-	usePowerUp(){
+	usePowerdown(){
 		let obj = {
 			room: this.props.room,
 			playerNumber: this.props.playerNumber,
@@ -90,6 +91,30 @@ class Mobile extends Component {
 		return(
 			<div className="mobile">
 				<SocketListener />
+			
+				<div className="gamePadContainer">
+						<div className="gamePad">
+							<p className="instructionsMobile">Tilt phone to control paddle</p>
+							{this.props.gameOver &&
+								<p className="playerResult">{this.props.winner.indexOf(this.props.playerNumber) > -1 ? 'You win' : 'You lose'}</p>
+							}
+							
+							<div className="speedContainer">
+								{this.state.dir === 'up' && Array.apply(null, { length: this.state.visualSpeed }).map((e, i) => {
+									return(	
+										<div key={i} className=" fontawesome chevronUp" style={{}}/>
+									)
+								})}
+								{this.state.dir === 'down' && Array.apply(null, { length: this.state.visualSpeed }).map((e, i) => {
+									return(	
+										<div key={i} className=" fontawesome chevronDown" style={{}}/>
+									)
+								})}
+								{this.state.dir === 'equal' && <div className="equal fontawesome " />}
+								
+							</div>
+						</div>
+				</div>
 				<div className="info">	
 					<div className="buttonSetMobile">
 						<div className="pausePlay buttonMobile">
@@ -113,30 +138,6 @@ class Mobile extends Component {
 							<p>Quit</p>
 						</div>	
 					</div>	
-				</div>
-				<div className="gamePadContainer">
-						<div className="gamePad">
-							<p className="instructionsMobile">Tilt phone to control paddle</p>
-							{this.props.gameOver &&
-								<p className="playerResult">{this.props.winner.indexOf(this.props.playerNumber) > -1 ? 'You win' : 'You lose'}</p>
-							}
-							{this.props.powerUp && !this.props.gameOver &&
-								<div className="powerUpContainer" onClick={this.usePowerUp.bind(this)} >
-									<p>
-										{
-											this.props.powerUp === 'invertOpponent' ? "Invert opponent's controls" : 
-											this.props.powerUp === 'multiBall' ? 'Multi ball' : 
-											this.props.powerUp === 'offYourLine' ? 'Come off your line' : 
-											''
-										}
-									</p>
-									{this.props.powerUp === 'multiBall' && <img className="powerUpImage" src={require('../../assets/images/multiBall.png')} />}
-									{this.props.powerUp === 'invertOpponent' && <img className="powerUpImage" src={require('../../assets/images/invertOpponent.png')} />}
-									{this.props.powerUp === 'offYourLine' && <img className="powerUpImage" src={require('../../assets/images/offYourLine.png')} />}
-
-								</div>
-							}
-						</div>
 				</div>
 			</div>
 		)

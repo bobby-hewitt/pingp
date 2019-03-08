@@ -7,6 +7,8 @@ import SocketListener from '../SocketListener'
 import Canvas from 'components/canvas'
 import { gameOver, powerUpGained } from 'sockets/host'
 import { setGameOver, powerUpUsedGameplay } from 'actions/gameplay'
+import ReactGA from 'react-ga';
+
 class Home extends Component {
 
 
@@ -31,9 +33,15 @@ class Home extends Component {
 	}
 
 	componentDidMount(){
+		this.initialiseAnalytics()
 		window.addEventListener("resize", () => {
 			this.setState({height:window.innerHeight, width: window.innerWidth})
 		});
+	}
+
+	initialiseAnalytics(){
+ 		ReactGA.initialize('UA-135889592-1');
+		ReactGA.pageview('/player');
 	}
 
 	componentWillUnmount(){
@@ -148,7 +156,7 @@ class Home extends Component {
 		let uri = false;
 		if (this.props.roomCode){
 			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('http://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
-			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://172.23.150.213:3000/m/' + this.props.roomCode.toLowerCase()
+			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://192.168.1.117:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
 		
 		return(

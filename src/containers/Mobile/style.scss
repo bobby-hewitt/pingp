@@ -67,6 +67,10 @@
 		padding:10px;
 		box-sizing: border-box;
 		.gamePad{
+			padding:20px;
+			display: flex;
+			flex:1;
+			flex-direction: column;
 			position: relative;
 			display: flex;
 			align-items: center;
@@ -91,13 +95,54 @@
 		text-align: center;
 	}
 	.instructionsMobile{
-		position: absolute;
-		top:10px;
+		// position: absolute;
+		// top:10px;
 		left:0;
 		color:#a6a6a6;
 		font-size: 20px;
 		text-align: center;
 		width:100%;
+		margin:0 0 20px 0;
+	}
+	.speedTitle{
+		padding-bottom: 20px;
+		font-size:20px;
+	}
+	.levelIndicator{
+		width:30px;
+		height:4px;
+		background:#333;
+	}
+	.speedIndicatorOuterContainer{
+		display: flex;
+		flex-direction: row;
+		align-items:center;
+		justify-content: center;
+	}
+	.speedIndicatorContainer{
+		display: flex;
+		flex:1;
+		width:4px;
+
+		.speedIndicator{
+			display: flex;
+			flex-direction: column;
+			flex:1;
+			width:4px;
+			background:#333;
+			// border-radius:2px;
+			// background:white;
+
+			.speedSection{
+				width:100%;
+				display: flex;
+				flex:1;
+				background:#green;
+				&.isSelected{
+					background:#f7f7f7;
+				}
+			}
+		}
 	}
 	.pausePlay{
 		/* position: absolute;
@@ -129,6 +174,35 @@
 		.powerUpImage{
 			max-width:60%;
 			max-height:45%;
+		}
+
+	}
+	.speedContainer{
+		// display: none;
+		height:100%;
+		display: flex;
+		align-items:center;
+		flex-direction: column;
+		justify-content: center;
+		flex:1;
+		// background:#333;
+		width:100%;
+		overflow:hidden;
+		.fontawesome{
+			margin-bottom:-10px;
+			&::after{
+				font-size:30px;
+				font-family: FontAwesome
+			}
+		}
+		.chevronUp::after{
+			content:"\f077";
+		}
+		.chevronDown::after{
+			content:"\f078";
+		}
+		.equal::after{
+			content:"\f00d";
 		}
 	}
 	

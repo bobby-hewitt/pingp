@@ -55,9 +55,9 @@ export default class Canvas extends Component {
 			this.resetScores()
 		}
 		// handle multi ball
-		if ((this.props.player1PowerUp !== 'multiBall' && np.player1PowerUp === 'multiBall') || (this.props.player2PowerUp !== 'multiBall' && np.player2PowerUp === 'multiBall')){
+		// if ((this.props.player1PowerUp !== 'multiBall' && np.player1PowerUp === 'multiBall') || (this.props.player2PowerUp !== 'multiBall' && np.player2PowerUp === 'multiBall')){
 
-		}
+		// }
 		//let players move between games
 		if (!this.props.isGameOver && np.isGameOver){
 			this.hasStarted = false;
@@ -233,36 +233,36 @@ export default class Canvas extends Component {
 
 	updatePlayer(){
 		//dont let player go beyond boundaries of the screen
-		if (this.props.player2PowerUp === 'invertOpponent'){
-			this.playerY =  
-			(this.playerY + this.props.yDir) > window.innerHeight - this.playerHeight ?
-				window.innerHeight - this.playerHeight : 
-			(this.playerY + this.props.yDir) <= 0 ?
-				0 : this.playerY + this.props.yDir
-		} else {
+		// if (this.props.player2PowerUp === 'invertOpponent'){
+		// 	this.playerY =  
+		// 	(this.playerY + this.props.yDir) > window.innerHeight - this.playerHeight ?
+		// 		window.innerHeight - this.playerHeight : 
+		// 	(this.playerY + this.props.yDir) <= 0 ?
+		// 		0 : this.playerY + this.props.yDir
+		// } else {
 			this.playerY =  
 			(this.playerY - this.props.yDir) > window.innerHeight - this.playerHeight ?
 				window.innerHeight - this.playerHeight : 
 			(this.playerY - this.props.yDir) <= 0 ?
 				0 : this.playerY - this.props.yDir
-		}
+		// }
 	}
 
 	updatePlayer2(){
 		//dont let player go beyond boundaries of the screen
-		if (this.props.player1PowerUp === 'invertOpponent'){
-			this.player2Y =  
-			(this.player2Y + this.props.yDir2) > window.innerHeight - this.playerHeight ?
-				window.innerHeight - this.playerHeight : 
-			(this.player2Y + this.props.yDir2) <= 0 ?
-				0 : this.player2Y + this.props.yDir2 
-		} else {
+		// if (this.props.player1PowerUp === 'invertOpponent'){
+		// 	this.player2Y =  
+		// 	(this.player2Y + this.props.yDir2) > window.innerHeight - this.playerHeight ?
+		// 		window.innerHeight - this.playerHeight : 
+		// 	(this.player2Y + this.props.yDir2) <= 0 ?
+		// 		0 : this.player2Y + this.props.yDir2 
+		// } else {
 			this.player2Y =  
 			(this.player2Y - this.props.yDir2) > window.innerHeight - this.playerHeight ?
 				window.innerHeight - this.playerHeight : 
 			(this.player2Y - this.props.yDir2) <= 0 ?
 				0 : this.player2Y - this.props.yDir2 
-		}
+		// }
 
 		
 				
@@ -299,8 +299,8 @@ export default class Canvas extends Component {
 			}
 			const normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
-			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
-				this.powerUp(1)
+			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed >= 8){
+				// this.powerUp(1)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir / 3
 				} else {
@@ -320,8 +320,8 @@ export default class Canvas extends Component {
 			const normalisedSpeed = this.props.yDir2 > 0 ? this.props.yDir2 : this.props.yDir2 * -1
 			//changes ball y speed if paddle is moving on impact
 
-			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed > 10){
-				this.powerUp(2)
+			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed >= 8){
+				// this.powerUp(2)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir2 / 3
 				} else {

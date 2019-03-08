@@ -83,6 +83,7 @@ function restartGame(cb){
 
 // emit
 function startGameSocket(self){
+	
 	self.props.startGame()
 	emit('start-game', self.props.room.long)
 }
@@ -95,6 +96,7 @@ function quitGameSocket(self){
 
 
 function restartGameSocket(self){
+	
 	emit('restart-game', self.props.room.long)
 	self.props.setGameOver(false)	
 }
