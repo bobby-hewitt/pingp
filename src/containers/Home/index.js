@@ -201,7 +201,7 @@ class Home extends Component {
 							<a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.pingp.co&t=Online%202%20Plsayer%20Pong" target="blank">
 								<div className="social" style={{backgroundImage: 'url(' + require('assets/images/facebook.png')+ ')'}} />
 	 						</a>
-	 						<a href="http://twitter.com/share?text=Online%20Two%20Player%20Pong&url=http%3A%2F%2Fwww.pingp.co&hashtags=funAndGames" target="blank">
+	 						<a href="http://twitter.com/share?text=You%20have%20got%20to%20play%20this&url=http%3A%2F%2Fwww.pingp.co&hashtags=funAndGames" target="blank">
 								<div className="social" style={{backgroundImage: 'url(' + require('assets/images/twitter.png')+ ')'}} />
 	 						</a>
  						</div>
