@@ -33,6 +33,12 @@ class Home extends Component {
 	}
 
 	componentDidMount(){
+		console.log(encodeURIComponent('http://www.pingp.co'))
+
+
+
+
+
 		this.initialiseAnalytics()
 		window.addEventListener("resize", () => {
 			this.setState({height:window.innerHeight, width: window.innerWidth})
@@ -189,6 +195,16 @@ class Home extends Component {
 					}
 					{!this.props.gameIsStarted && this.props.players.length >= 2 &&
 						<h4 className="qr">Press play to start</h4>
+					}
+					{!this.props.gameIsStarted &&
+						<div className="socials">
+							<a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.pingp.co&t=Online%202%20Plsayer%20Pong" target="blank">
+								<div className="social" style={{backgroundImage: 'url(' + require('assets/images/facebook.png')+ ')'}} />
+	 						</a>
+	 						<a href="http://twitter.com/share?text=Online%20Two%20Player%20Pong&url=http%3A%2F%2Fwww.pingp.co&hashtags=funAndGames" target="blank">
+								<div className="social" style={{backgroundImage: 'url(' + require('assets/images/twitter.png')+ ')'}} />
+	 						</a>
+ 						</div>
 					}
 					{!this.props.gameIsStarted && this.props.players.length < 2 &&
 						<div>
