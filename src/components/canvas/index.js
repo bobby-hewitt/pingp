@@ -12,15 +12,15 @@ export default class Canvas extends Component {
 		this.playerHeight = 120;
 		this.playerWidth = 7;
 		this.playerX = 20;
-		this.playerY = window.innerHeight / 2 - this.playerHeight / 2
+		this.playerY = this.props.height / 2 - this.playerHeight / 2
 		//player 2
-		this.player2X = window.innerWidth - this.playerX;
-		this.player2Y = window.innerHeight / 2 - this.playerHeight / 2
+		this.player2X = this.props.width - this.playerX;
+		this.player2Y = this.props.height / 2 - this.playerHeight / 2
 		//ball
 		this.ballSize = 5;
-		this.ballX = window.innerWidth / 2;
-		this.ballY = window.innerHeight / 2 -100;
-		// this.ballY = window.innerHeight / 2 ;
+		this.ballX = this.props.width / 2;
+		this.ballY = this.props.height / 2 -100;
+		// this.ballY = this.props.height / 2 ;
 		this.ballDirX = 1;
 		this.ballDirY = 1;
 		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
@@ -47,11 +47,11 @@ export default class Canvas extends Component {
 		//reset because starting new game
 		if (this.props.isGameOver && !np.isGameOver){
 			this.hasStarted = false;
-			this.playerY = window.innerHeight / 2 - this.playerHeight / 2
-			this.player2X = window.innerWidth - this.playerX;
-			this.player2Y = window.innerHeight / 2 - this.playerHeight / 2
-			this.ballX = window.innerWidth / 2;
-			this.ballY = window.innerHeight / 2 -100;
+			this.playerY = this.props.height / 2 - this.playerHeight / 2
+			this.player2X = this.props.width - this.playerX;
+			this.player2Y = this.props.height / 2 - this.playerHeight / 2
+			this.ballX = this.props.width / 2;
+			this.ballY = this.props.height / 2 -100;
 			this.resetScores()
 		}
 		// handle multi ball
@@ -64,11 +64,11 @@ export default class Canvas extends Component {
 		}
 		//window resize.  Adjust canvas and limits
 		if(this.props.height !== np.height || this.props.width !== np.width){
-			this.playerY = window.innerHeight / 2 - this.playerHeight / 2
-			this.player2X = window.innerWidth - this.playerX;
-			this.player2Y = window.innerHeight / 2 - this.playerHeight / 2
-			this.ballX = window.innerWidth / 2;
-			this.ballY = window.innerHeight / 2 -100;
+			this.playerY = this.props.height / 2 - this.playerHeight / 2
+			this.player2X = this.props.width - this.playerX;
+			this.player2Y = this.props.height / 2 - this.playerHeight / 2
+			this.ballX = this.props.width / 2;
+			this.ballY = this.props.height / 2 -100;
 		}
 	}
 
@@ -101,15 +101,15 @@ export default class Canvas extends Component {
 
 	setup(){
 		// reset variables
-		this.ballY = window.innerHeight / 2 - 100
-		this.ballX = window.innerWidth / 2
+		this.ballY = this.props.height / 2 - 100
+		this.ballX = this.props.width / 2
 		this.ballYSpeed = Math.random() < 0.5 ? 5 : -5
 		this.ballXSpeed = Math.random() < 0.5 ? 5 : -5
 	}
 
 	loop(){
 		//clear things
-		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+		this.ctx.clearRect(0, 0, this.props.width, this.props.height);
 		//update things
 		if (this.props.isPlaying && !this.props.isGameOver){
 			this.hasStarted = true
@@ -153,22 +153,22 @@ export default class Canvas extends Component {
 		// if (this.props.player2PowerUp === 'invertOpponent'){
 		// 	let drawing = new Image() 
 		// 	drawing.src = require('assets/images/invertOpponent.png')
-		// 	this.ctx.drawImage(drawing,window.innerWidth -50,20, 30, 60);
+		// 	this.ctx.drawImage(drawing,this.props.width -50,20, 30, 60);
 		// } else if (this.props.player2PowerUp === 'multiBall'){
 		// 	let drawing = new Image() 
 		// 	drawing.src = require('assets/images/multiBall.png')
-		// 	this.ctx.drawImage(drawing,window.innerWidth -70,20, 50, 50);
+		// 	this.ctx.drawImage(drawing,this.props.width -70,20, 50, 50);
 		// } else if (this.props.player2PowerUp === 'offYourLine'){
 		// 	let drawing = new Image() 
 		// 	drawing.src = require('assets/images/offYourLine.png')
-		// 	this.ctx.drawImage(drawing,window.innerWidth -90,20, 70, 30);
+		// 	this.ctx.drawImage(drawing,this.props.width -90,20, 70, 30);
 		// }
 
 		this.ctx.beginPath();
 		this.ctx.setLineDash([15, 15]);
 		this.ctx.strokeStyle = '#555';
-		this.ctx.moveTo(window.innerWidth / 2, 0);
-		this.ctx.lineTo(window.innerWidth / 2, window.innerHeight);
+		this.ctx.moveTo(this.props.width / 2, 0);
+		this.ctx.lineTo(this.props.width / 2, this.props.height);
 		this.ctx.stroke();
 	}
 
@@ -176,7 +176,7 @@ export default class Canvas extends Component {
 		this.ballX = this.ballX + (this.ballXSpeed * this.ballDirX)
 		this.ballY = this.ballY + (this.ballYSpeed * this.ballDirY)
 		//ball has gone of right edge of screen
-		if (this.ballX > window.innerWidth - this.ballSize ){
+		if (this.ballX > this.props.width - this.ballSize ){
 			//if there is a second player let it go and reset
 			if (this.props.numOfPlayers === 2){
 				this.props.scored()
@@ -208,7 +208,7 @@ export default class Canvas extends Component {
 			this.setup()
 		} 
 		//turn ball around on y axis
-		if (this.ballY > window.innerHeight - this.ballSize || this.ballY <= 0){
+		if (this.ballY > this.props.height - this.ballSize || this.ballY <= 0){
 			this.ballDirY *= -1
 		}
 
@@ -235,14 +235,14 @@ export default class Canvas extends Component {
 		//dont let player go beyond boundaries of the screen
 		// if (this.props.player2PowerUp === 'invertOpponent'){
 		// 	this.playerY =  
-		// 	(this.playerY + this.props.yDir) > window.innerHeight - this.playerHeight ?
-		// 		window.innerHeight - this.playerHeight : 
+		// 	(this.playerY + this.props.yDir) > this.props.height - this.playerHeight ?
+		// 		this.props.height - this.playerHeight : 
 		// 	(this.playerY + this.props.yDir) <= 0 ?
 		// 		0 : this.playerY + this.props.yDir
 		// } else {
 			this.playerY =  
-			(this.playerY - this.props.yDir) > window.innerHeight - this.playerHeight ?
-				window.innerHeight - this.playerHeight : 
+			(this.playerY - this.props.yDir) > this.props.height - this.playerHeight ?
+				this.props.height - this.playerHeight : 
 			(this.playerY - this.props.yDir) <= 0 ?
 				0 : this.playerY - this.props.yDir
 		// }
@@ -252,14 +252,14 @@ export default class Canvas extends Component {
 		//dont let player go beyond boundaries of the screen
 		// if (this.props.player1PowerUp === 'invertOpponent'){
 		// 	this.player2Y =  
-		// 	(this.player2Y + this.props.yDir2) > window.innerHeight - this.playerHeight ?
-		// 		window.innerHeight - this.playerHeight : 
+		// 	(this.player2Y + this.props.yDir2) > this.props.height - this.playerHeight ?
+		// 		this.props.height - this.playerHeight : 
 		// 	(this.player2Y + this.props.yDir2) <= 0 ?
 		// 		0 : this.player2Y + this.props.yDir2 
 		// } else {
 			this.player2Y =  
-			(this.player2Y - this.props.yDir2) > window.innerHeight - this.playerHeight ?
-				window.innerHeight - this.playerHeight : 
+			(this.player2Y - this.props.yDir2) > this.props.height - this.playerHeight ?
+				this.props.height - this.playerHeight : 
 			(this.player2Y - this.props.yDir2) <= 0 ?
 				0 : this.player2Y - this.props.yDir2 
 		// }
@@ -299,7 +299,7 @@ export default class Canvas extends Component {
 			}
 			const normalisedSpeed = this.props.yDir > 0 ? this.props.yDir : this.props.yDir * -1
 			//changes ball y speed if paddle is moving on impact
-			if (this.playerY !== 0 && this.playerY !== window.innerHeight - this.playerHeight && normalisedSpeed >= 8){
+			if (this.playerY !== 0 && this.playerY !== this.props.height - this.playerHeight && normalisedSpeed >= 8){
 				// this.powerUp(1)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir / 3
@@ -320,7 +320,7 @@ export default class Canvas extends Component {
 			const normalisedSpeed = this.props.yDir2 > 0 ? this.props.yDir2 : this.props.yDir2 * -1
 			//changes ball y speed if paddle is moving on impact
 
-			if (this.player2Y !== 0 && this.player2Y !== window.innerHeight - this.playerHeight && normalisedSpeed >= 8){
+			if (this.player2Y !== 0 && this.player2Y !== this.props.height - this.playerHeight && normalisedSpeed >= 8){
 				// this.powerUp(2)
 				if (this.ballYSpeed > 0){
 					this.ballYSpeed += this.props.yDir2 / 3
@@ -333,7 +333,7 @@ export default class Canvas extends Component {
 
 	render(){
 		return(
-			<div>
+			<div className="canvasContainer">
 				<canvas ref="canvas" id="canvas" height={this.props.height} width={this.props.width}>
 				</canvas>
 				<div className="scores">

@@ -20,8 +20,8 @@ class Home extends Component {
 		this.player1PowerUpTimeout = null
 		this.speed = 1
 		this.state = {
-			height: window.innerHeight,
-			width:window.innerWidth,
+			height: 666,
+			width:1000,
 			yDir: 0,
 			yDir2: 0,
 			is2Player: false,
@@ -40,9 +40,10 @@ class Home extends Component {
 
 
 		this.initialiseAnalytics()
-		window.addEventListener("resize", () => {
-			this.setState({height:window.innerHeight, width: window.innerWidth})
-		});
+		// window.addEventListener("resize", () => {
+		// 	console.log(window.innerHeight, window.innerWidth)
+		// 	this.setState({height:window.innerHeight, width: window.innerWidth})
+		// });
 	}
 
 	initialiseAnalytics(){
@@ -166,7 +167,8 @@ class Home extends Component {
 		} 
 		
 		return(
-			<div className="home">
+			<div className="home" >
+				
 				<SocketListener isHost/>
 				<Canvas
 					player1PowerUp={this.props.player1PowerUp}
@@ -224,7 +226,7 @@ class Home extends Component {
 					}
 					</div>
 				</div>
-				{this.state.height < 500 || this.state.width < 800 &&
+				{window.innerHeight < 666 || window.innerWidth <1000 &&
 					<div className="tooSmall">
 						<div>
 							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
