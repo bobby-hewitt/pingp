@@ -166,7 +166,17 @@ class Home extends Component {
 			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://192.168.1.117:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
 		
-		return(
+		
+			if(this.state.height < 500 || this.state.width < 800){
+				return(
+					<div className="tooSmall">
+						<div>
+							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
+						</div>
+					</div>
+				)
+			} 
+			return(
 			<div className="home">
 				<SocketListener isHost/>
 				<Canvas
@@ -184,55 +194,49 @@ class Home extends Component {
 					yDir2={this.state.yDir2}
 					is2Player={this.props.players.length == 2}
 					numOfPlayers={this.props.players.length}/>
+					
 					<div className="code">
-					<div className="headerContainer">
-					{uri && !this.props.gameIsStarted && this.props.players.length < 2 &&
-						<div className="qr">
-							<p>Open the camera on your phone <br/>and focus on the QR code</p>
-							<img className="qrCode" src={uri} />
-							<p>Otherwise just go to:<br/><span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>
-							
+						<div className="headerContainer">
+							{uri && !this.props.gameIsStarted && this.props.players.length < 2 &&
+								<div className="qr">
+									<p>Open the camera on your phone <br/>and focus on the QR code</p>
+									<img className="qrCode" src={uri} />
+									<p>Otherwise just go to:<br/><span className="instructions">www.pingp.co/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>	
+								</div>
+							}
+							{!this.props.gameIsStarted && this.props.players.length >= 2 &&
+								<h4 className="qr">Press play to start</h4>
+							}
+							{!this.props.gameIsStarted &&
+								<div className="socials">
+									<a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.pingp.co&t=Online%202%20Plsayer%20Pong" target="blank">
+										<div className="social" style={{backgroundImage: 'url(' + require('assets/images/facebook.png')+ ')'}} />
+			 						</a>
+			 						<a href="http://twitter.com/share?text=You%20have%20got%20to%20play%20this&url=http%3A%2F%2Fwww.pingp.co&hashtags=funAndGames" target="blank">
+										<div className="social" style={{backgroundImage: 'url(' + require('assets/images/twitter.png')+ ')'}} />
+			 						</a>
+		 						</div>
+							}
+							{!this.props.gameIsStarted && this.props.players.length < 2 &&
+								<div>
+									<p className="players"><span className="instructions">PingP (1-2 players)</span></p>
+									<p className="instructions"></p>		
+								</div>
+							}
+							{this.state.countdown &&
+								<h1 className="qr">{this.state.countdownNumber}</h1>
+							}
+							{this.props.gameOver &&
+								<h1 className="qr">Game over</h1>
+							}
+							{this.props.gameIsStarted && this.props.players.length < 2 &&
+								<p className="help">Pause game to add another player</p>
+							}
 						</div>
-					}
-					{!this.props.gameIsStarted && this.props.players.length >= 2 &&
-						<h4 className="qr">Press play to start</h4>
-					}
-					{!this.props.gameIsStarted &&
-						<div className="socials">
-							<a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.pingp.co&t=Online%202%20Plsayer%20Pong" target="blank">
-								<div className="social" style={{backgroundImage: 'url(' + require('assets/images/facebook.png')+ ')'}} />
-	 						</a>
-	 						<a href="http://twitter.com/share?text=You%20have%20got%20to%20play%20this&url=http%3A%2F%2Fwww.pingp.co&hashtags=funAndGames" target="blank">
-								<div className="social" style={{backgroundImage: 'url(' + require('assets/images/twitter.png')+ ')'}} />
-	 						</a>
- 						</div>
-					}
-					{!this.props.gameIsStarted && this.props.players.length < 2 &&
-						<div>
-							<p className="players"><span className="instructions">PingP (1-2 players)</span></p>
-							<p className="instructions"></p>
-							
-						</div>
-					}
-					{this.state.countdown &&
-						<h1 className="qr">{this.state.countdownNumber}</h1>
-					}
-					{this.props.gameOver &&
-						<h1 className="qr">Game over</h1>
-					}
-					{this.props.gameIsStarted && this.props.players.length < 2 &&
-						<p className="help">Pause game to add another player</p>
-					}
 					</div>
+
+					
 				</div>
-				{this.state.height < 500 || this.state.width < 800 &&
-					<div className="tooSmall">
-						<div>
-							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
-						</div>
-					</div>
-				}
-			</div>
 		)
 	}
 }
