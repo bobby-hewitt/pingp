@@ -167,8 +167,7 @@ class Home extends Component {
 		} 
 		
 		return(
-			<div className="home" >
-				
+			<div className="home">
 				<SocketListener isHost/>
 				<Canvas
 					player1PowerUp={this.props.player1PowerUp}
@@ -226,7 +225,7 @@ class Home extends Component {
 					}
 					</div>
 				</div>
-				{this.state.height < 666 || this.state.width <1000 &&
+				{this.state.height < 500 || this.state.width < 800 &&
 					<div className="tooSmall">
 						<div>
 							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
