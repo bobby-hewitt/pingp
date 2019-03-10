@@ -17,7 +17,7 @@
 		position:absolute;
 		top:30px;
 		left:0;
-		transform:translateY(-300px);
+		// transform:translateY(-300px);
 	}
 	// border: 3px solid #f7f7f7;
 }
@@ -41,9 +41,6 @@
 }
 .scores{
 	opacity:0.3;
-	position: absolute;
-	// top:0px;
-	// left:50%;
 	text-align:center;
 	color:#f7f7f7;
 	z-index: 1;
