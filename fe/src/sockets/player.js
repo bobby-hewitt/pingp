@@ -11,8 +11,27 @@ function subscribeToPlayerEvents(self, cb) {
 	socket.on('host-quit', hostQuit.bind(this, self))
 	socket.on('restart-game', restartGame.bind(this, cb))
 	socket.on('game-over', gameOver.bind(this, self))
-	socket.on('power-up-gained', powerUpGained.bind(this, self))
+	// socket.on('power-up-gained', powerUpGained.bind(this, self))
 }
+
+function joinRoom(data, self){
+	data.id = socket.id
+	emit('player-join-room', data)
+}
+
+function successJoiningRoom(self, data){
+	console.log('self', self)
+	self.props.setPlayerRoom(data.result)
+	self.props.setPlayerNumber(data.playerNumber)
+	self.props.setPlayerData(data.playerData)
+	self.props.push('m/home')
+}
+
+function errorJoiningRoom(){
+
+}
+
+
 
 function getPowerup(){
 	let powerups = ['invertOpponent']
@@ -20,9 +39,9 @@ function getPowerup(){
     return powerups[r]
 }
 
-function powerUpGained(self, data){
-	self.props.powerUpGained(getPowerup())
-}
+// function powerUpGained(self, data){
+// 	self.props.powerUpGained(getPowerup())
+// }
 
 function powerUpUsedSocket(data, self){	
 	emit('power-up-used', data)
@@ -43,13 +62,7 @@ function gameOver(self, data){
 }
 
 
-function successJoiningRoom(self, data){
-	self.props.setPlayerRoom(data.result)
-	self.props.setPlayerNumber(data.playerNumber)
-}
-function errorJoiningRoom(){
 
-}
 
 function sendOrientation(coords, self){
 	if (self.props.room){
@@ -84,11 +97,7 @@ function gameStarted(cb){
 	cb('startGame', false)
 }
 
-function joinRoom(data, self){
-	data.id = socket.id
-	self.props.setSelf(data)
-	emit('player-join-room', data)
-}
+
 
 function emit(action, data){
 	socket.emit(action, data)

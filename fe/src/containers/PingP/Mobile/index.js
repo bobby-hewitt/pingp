@@ -4,13 +4,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from 'containers/SocketListener/PingP'
-import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket, powerUpUsedSocket } from 'sockets/PingP/player'
+import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket, powerUpUsedSocket } from 'sockets/player'
 import { setSelf, powerUpUsed  } from 'actions/PingP/player'
 import { startGame, setGameOver } from 'actions/PingP/gameplay'
 import ReactGA from 'react-ga';
 
 class Mobile extends Component {
-
 	constructor(props){
 		super(props)
 		this.state = {
@@ -50,8 +49,6 @@ class Mobile extends Component {
 	componentDidMount(){
 		window.addEventListener('deviceorientation', (orientation) => {
 			let {y, dir, visualSpeed } = this.findLimit(orientation.beta)
-			// let x = this.findLimit(orientation.gamma)
-
 			if (y !== this.state.yDir){				
 				let dirs = {
 					y: y,

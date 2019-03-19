@@ -1,0 +1,47 @@
+.infoBar{
+	position: absolute;
+	top:0;
+	left:0;
+	padding:0 60px;
+	height:75px;
+	width:100%;
+	background:rgba(0,0,0,0.1);
+	box-shadow: 0px 2px 2px rgba(0,0,0,0.1);
+	display: flex;
+	align-items: center;
+	.roomCode{	
+		color:#f7f7f7;
+		font-size: 20px;
+		font-weight: bold;
+		span{
+			opacity:0.5;
+		}
+	}
+	.hostInfoPlayersContainer{
+		position: absolute;
+		top:0;
+		right:0px;
+		height:75px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+	}
+	.player{
+		font-size: 20px;
+		color:#f7f7f7;
+		width:20px;
+		height:20px;
+		opacity:0;
+		margin-right:0px;
+		&.connected{
+			opacity:1;
+		}
+		&:after{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: FontAwesome;
+			content: "\f007"
+		}	
+	}
+}

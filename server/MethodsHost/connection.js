@@ -1,7 +1,6 @@
 const Rooms = require('../models/rooms')
-
+const constants = require('../constants')
 exports.hostConnected = function(socket){
-
 	function createCode(){
 		var possible = "ABCDEFGHIJKLMNPQRSTUVWXYZ";
 		var text = '';
@@ -20,9 +19,14 @@ exports.hostConnected = function(socket){
 			storeRoom(room)
 		})
 	}
+
+	let playerArr = []
+	for (var i = 0; i < constants.playerLimit; i++){
+		playerArr.push(false)
+	}
 	function storeRoom(room){
 		console.log('storing room', room)
-		Rooms.create({short: room, long: socket.id}, ()=> {
+		Rooms.create({short: room, long: socket.id, players:playerArr}, ()=> {
 			socket.emit('room-code-generated', room)
 		})
 		

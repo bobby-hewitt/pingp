@@ -34,15 +34,6 @@ export const setResponses = (payload) => {
   }
 }
 
-export const addPlayer = (payload) => {
-  return dispatch => {
-    dispatch({
-      type: 'ADD_PLAYER',
-      payload
-    })
-  }
-}
-
 
 export const startRoundHost = (payload) => {
 	console.log('start round host')

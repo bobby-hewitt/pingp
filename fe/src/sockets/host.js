@@ -7,9 +7,9 @@ function subscribeToHostEvents(self, cb) {
 	console.log('SUBSCRIBING TO HOST')
 	socket.emit('host-connected');
 	socket.on('room-code-generated', roomCodeGenerated.bind(this, cb))
-  	socket.on('player-joined', playerJoined.bind(this, cb))
+  	socket.on('update-players', updatePlayers.bind(this, cb))
   	socket.on('start-game', startGame.bind(this, cb))
-  	socket.on('player-responded', playerResponded.bind(this, self))
+  	// socket.on('player-responded', playerResponded.bind(this, self))
   	socket.on('device-orientation-sending', gotCoords.bind(this, cb))
   	socket.on('quit-game-player', quitGamePlayer.bind(this, cb))
   	socket.on('restart-game', restartGame.bind(this, cb))
@@ -55,17 +55,18 @@ function gameOver(self, winner){
 	socket.emit('game-over', winner)
 }
 
-function playerJoined(cb, data){
-	cb('addPlayer', data)
+function updatePlayers(cb, data){
+	console.log('updateing players', data)
+	cb('updatePlayers', data)
 }
 
 function startRound(self, cb){
 	socket.emit('start-round');
 }
 
-function playerResponded(self, data){
-	self.props.setResponses(data)
-}
+// function playerResponded(self, data){
+// 	self.props.setResponses(data)
+// }
 
 export { 
 	powerUpGained,

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from 'containers/SocketListener/PingP'
 import Canvas from 'components/canvas'
-import { gameOver, powerUpGained } from 'sockets/PingP/host'
+import { gameOver, powerUpGained } from 'sockets/host'
 import { setGameOver, powerUpUsedGameplay } from 'actions/PingP/gameplay'
 import ReactGA from 'react-ga';
 import localSetup from 'config/local'

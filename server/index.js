@@ -8,6 +8,7 @@ var io = require('socket.io')(http);
 const mongoose = require('mongoose')
 require('dotenv').config({path: '.env'})
 const bodyParser = require('body-parser')
+const constants = require('./constants')
 app.use(cors())
 var PORT = process.env.PORT || 9000
 const Rooms = require('./models/rooms')
@@ -32,6 +33,7 @@ mongoose.connection.on('connected', function() {
 const PlayerConnection = require('./MethodsPlayer/connection')
 const HostConnection = require('./MethodsHost/connection')
 //event handlers
+
 io.on('connection', function(socket){  
   // socket.on('test', test.bind(this, socket));
   socket.on('disconnect', disconnect.bind(this, socket));
@@ -50,31 +52,64 @@ io.on('connection', function(socket){
 });
 
 
+//FUNCTIONS HERE HANDLE PLAYER CONNECTION AND DISCONNECTION
+//host connection is handled in host file.
+
+function getNumberOfTruthies(array){
+	let count = 0
+	for (var i = 0; i < array.length; i++){
+		if(array[i]) count += 1
+	}
+	return count
+}
+
+
+
 function checkRoomNumbers(socket, playerData){
-	console.log('playerData')
 	Rooms.findOne({short: playerData.room}, function(err, result){
 		if (err){
 			console.log('error finding room')
 			return socket.emit('error-joining-room')
 		} else if (result) {
 
-			const numberInRoom = io.sockets.adapter.rooms[result.long] ? io.sockets.adapter.rooms[result.long].length : 0
-			console.log('number in room', )
-			if (numberInRoom <= 2){
-				console.log('number in room < 2')
+			const numberOfPlayers = getNumberOfTruthies(result.players.length)
+			if (numberOfPlayers < constants.playerLimit){
+				//join the room 
 				socket.join(result.long)	
-				// playerData
-				playerData.id = socket.id
-				socket.broadcast.to(result.long).emit('player-joined', playerData);
-				result.player = playerData
-				result.playerNumber = numberInRoom
-				let obj = {
-					result: result,
-					playerNumber: numberInRoom == 1 ? 1 : 2
+				//update the players in the room in DB
+				let newArray = []
+				let hasGoneIn = false
+				let playerNumber = null
+				for (var i = 0; i < result.players.length; i++){
+					if (result.players[i] || hasGoneIn){
+						newArray.push(result.players[i])
+					} else {
+						playerNumber = i + 1
+						newArray.push({
+							id: socket.id,
+							name: playerData.name
+						})
+						hasGoneIn = true
+					} 
 				}
-				socket.emit('success-joining-room', obj)
+
+				result.players = newArray
+				console.log(result.players)
+				result.save(sendResultToPlayer)
+				playerData.playerNumber = playerNumber
+				playerData.room = result.long
+
+				function sendResultToPlayer(){
+					console.log('sending to player')
+					socket.broadcast.to(result.long).emit('update-players', result.players);
+					let obj = {
+						result: result,
+						playerNumber: playerNumber,
+						playerData: playerData
+					}
+					socket.emit('success-joining-room', obj)
+				}	
 			} else {
-				console.log('number in room GT 2')
 				socket.emit('room-full')
 			}
 		} else {
@@ -87,16 +122,35 @@ function checkRoomNumbers(socket, playerData){
 
 function disconnect(socket){
 	let rooms = socket.rooms
-
 	//handle host disconnect
 	Rooms.findOne({long: socket.id}, function(err, room){
-		socket.broadcast.to(socket.id).emit('host-quit');
-		socket.emit('quit-game-player');
-		console.log('deleting the room')
-		if (room) return room.remove()
+		if (room) {
+			socket.broadcast.to(socket.id).emit('host-quit');
+			return room.remove()
+		} else {
+			removePlayer(socket)
+		}
 	})
 }
 
+function removePlayer(socket){
+	Rooms.findOne({players: socket.id}, function(err, room){
+		console.log('room', room)
+		if (room) {
+			let newArray = []
+			for (var i = 0; i < room.players.length; i++){
+				if (room.players[i] === socket.id){
+					newArray.push(false)
+				} else {
+					newArray.push(room.players[i])
+				}
+			}
+			room.players = newArray
+			room.save()
+			socket.broadcast.to(room.long).emit('update-players', room.players);
+		} 
+	})
+}
 
 http.listen(PORT, function(err){
 	if (err){
@@ -108,6 +162,6 @@ http.listen(PORT, function(err){
 });
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
+// });

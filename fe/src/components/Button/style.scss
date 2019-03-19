@@ -1,0 +1,25 @@
+.button{
+	position: relative;
+	height:50px;
+	margin:20px auto;
+	float: right;
+	padding:0 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: bold;
+	font-size: 16px;
+	background:rgba(0,0,0,0.2);
+	border:5px solid rgba(255,255,255,1);
+	color:#f7f7f7;
+	border-radius: 10px;
+	box-shadow:0 0 20px rgba(0,0,0,0.5);
+	.transparent{
+		opacity:0.000001;
+	}
+	.loadingSpinner{
+		position:absolute;
+		width:20px;
+		height:20px;
+	}
+}

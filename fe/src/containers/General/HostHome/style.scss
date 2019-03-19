@@ -1,0 +1,72 @@
+.hostHomeContainer{
+	position: absolute;
+	top:75px;
+	left:0;
+	bottom:0;
+	right:0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	flex:1;
+
+	.globalQRCode{	
+		width:250px;
+		height:250px;
+	}
+	.hostHomeInstructions{
+		color:#f7f7f7;
+		margin:20px;
+		text-align: center;
+		line-height: 24px;
+		font-weight: bold;
+	}
+	.hostPlayerContainer{	
+		padding:10px 20px;
+		margin:10px;
+		background:rgba(0,0,0,0.2);
+		border:5px solid rgba(255,255,255,1);
+		color:#f7f7f7;
+		border-radius: 10px;
+		font-weight: bold;
+		font-size: 20px;
+		width:300px;
+		opacity:0.5;
+		height:60px;
+		display: flex;
+		align-items: center;
+		&.active{
+			opacity:1;
+		}
+	}
+	.playerIconHome{
+		font-size: 20px;
+		color:#f7f7f7;
+		width:20px;
+		height:20px;
+		
+		margin-right:10px;
+		&.connected{
+			opacity:0.8
+		}
+		&:after{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: FontAwesome;
+			content: "\f007"
+		}	
+	}
+	.players, .qr{
+		flex-direction: column;
+		flex:1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.qr img{
+		border-radius: 10px;
+		border: 5px solid #f7f7f7;
+		padding:20px;background:rgba(0,0,0,0.2);
+	}
+}

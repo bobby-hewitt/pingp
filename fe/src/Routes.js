@@ -1,7 +1,8 @@
 import React from 'react';
-import { Route, Switch } from 'react-router'
+import { Route } from 'react-router'
 import PingPHost from './containers/PingP/Home'
-import Home from './containers/Home'
+import HostConnection from './containers/General/HostConnection'
+import MobileConnection from './containers/General/MobileConnection'
 import Mobile from './containers/PingP/Mobile'
 import RoomFull from './containers/General/RooomFull'
 import RoomNotFound from './containers/General/RoomNotFound'
@@ -11,7 +12,9 @@ const Routes = () => (
   <div>
     <main>   
         
-        <Route exact path="/" component={Home} />
+        <Route path="/h" component={HostConnection} />
+        <Route path="/m" component={MobileConnection} />
+        <Route path="/join" component={MobileConnection} />
     	{/*PING P*/}
         <Route exact path="/pingp" component={PingPHost} />
         <Route exact path="/pingp/m/:code" component={Mobile} />

@@ -3,11 +3,12 @@ import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import io from 'socket.io-client';
-import {subscribeToPlayerEvents} from 'sockets/PingP/player'
-import {subscribeToHostEvents} from 'sockets/PingP/host'
-import { setRoomCode, addPlayer, startRoundHost, setResponses, setCoords1, setCoords2 } from 'actions/PingP/host'
+import {subscribeToPlayerEvents} from 'sockets/player'
+import {subscribeToHostEvents} from 'sockets/host'
+import { setRoomCode, startRoundHost, setResponses, setCoords1, setCoords2 } from 'actions/PingP/host'
 import { setPlayerRoom, setSelf, setPlayerNumber, powerUpGained, powerUpUsed } from 'actions/PingP/player'
 import { startGame, setGameOver, powerUpUsedGameplay } from 'actions/PingP/gameplay'
+import { updatePlayers } from 'actions/general/host'
 
 
 class SocketListener extends Component {
@@ -52,7 +53,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setCoords2,
   setSelf,
   startRoundHost,
-  addPlayer,
   setPlayerRoom,
   push: (path) => push('/' + path)
 }, dispatch)
