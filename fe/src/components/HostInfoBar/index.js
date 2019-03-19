@@ -8,12 +8,12 @@ export default class InfoBar extends Component {
 			<div className="infoBar">
 				<p className="roomCode"><span>Room code: </span> {roomCode}</p>
 				<div className="hostInfoPlayersContainer">
-				{this.props.players.map((p, i) => {
+				{/*this.props.players.map((p, i) => {
 					return(
 						<div className={`player player${i} ${p && ' connected'}`}>
 						</div>
 					)
-				})}
+				})*/}
 				</div>
 			</div>
 		)

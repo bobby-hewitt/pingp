@@ -12,7 +12,7 @@ import {subscribeToHostEvents} from 'sockets/host'
 //pingP actions
 import { setRoomCode, startRoundHost, setResponses, setCoords1, setCoords2 } from 'actions/PingP/host'
 import { setPlayerRoom, setPlayerNumber, powerUpGained, powerUpUsed } from 'actions/PingP/player'
-import { setSelf } from 'actions/global/player'
+import { setSelf } from 'actions/general/player'
 import { startGame, setGameOver, powerUpUsedGameplay } from 'actions/PingP/gameplay'
 import { updatePlayers } from 'actions/general/host'
 import { setPlayerData } from 'actions/general/player'
