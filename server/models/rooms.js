@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 
 var Rooms = new Schema({
 	short: '',
-	long: ''
+	long: '',
+	players: [String],
 });
  
 var Me = module.exports = mongoose.model('Rooms', Rooms);

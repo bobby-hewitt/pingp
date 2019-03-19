@@ -51,6 +51,7 @@ io.on('connection', function(socket){
 
 
 function checkRoomNumbers(socket, playerData){
+	console.log('playerData')
 	Rooms.findOne({short: playerData.room}, function(err, result){
 		if (err){
 			console.log('error finding room')

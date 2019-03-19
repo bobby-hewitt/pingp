@@ -5,13 +5,11 @@ exports.playerJoinRoom = function(socket, playerData){
 	console.dir(playerData.room.short)
 	console.log('PLAYER JOINED THE ROOM')
 	Rooms.findOne({short: playerData.room}, function(err, result){
-		if (err){
-				
+		if (err){	
 			return socket.emit('error-joining-room')
 		} else if (result) {
-
+			
 			socket.join(result.long)
-			console.log('CLIETNS')
 			socket.broadcast.to(result.long).emit('player-joined', playerData);
 			result.player = playerData
 			socket.emit('success-joining-room', result)
@@ -51,6 +49,6 @@ exports.playerBuzz = function(socket, data){
 }
 
 exports.deviceOrientation = function(socket, data){
-	// console.log('recieving data', data)
+	console.log('recieving data', data)
 	socket.to(data.room).emit('device-orientation-sending', data)
 }
