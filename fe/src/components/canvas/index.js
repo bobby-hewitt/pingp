@@ -135,38 +135,9 @@ export default class Canvas extends Component {
 	}
 
 	drawBoard(){
-		//player 1 powerup
-		// if (this.props.player1PowerUp === 'invertOpponent'){
-		// 	let drawing = new Image() 
-		// 	drawing.src = require('assets/images/invertOpponent.png')
-		// 	this.ctx.drawImage(drawing,20,20, 30, 60);
-		// } else if (this.props.player1PowerUp === 'multiBall'){
-		// 	let drawing = new Image() 
-		// 	drawing.src = require('assets/images/multiBall.png')
-		// 	this.ctx.drawImage(drawing,20,20, 50, 50);
-		// } else if (this.props.player1PowerUp === 'offYourLine'){
-		// 	let drawing = new Image() 
-		// 	drawing.src = require('assets/images/offYourLine.png')
-		// 	this.ctx.drawImage(drawing,20,20, 70, 30);
-		// }
-		// // player 2 powerup
-		// if (this.props.player2PowerUp === 'invertOpponent'){
-		// 	let drawing = new Image() 
-		// 	drawing.src = require('assets/images/invertOpponent.png')
-		// 	this.ctx.drawImage(drawing,this.props.width -50,20, 30, 60);
-		// } else if (this.props.player2PowerUp === 'multiBall'){
-		// 	let drawing = new Image() 
-		// 	drawing.src = require('assets/images/multiBall.png')
-		// 	this.ctx.drawImage(drawing,this.props.width -70,20, 50, 50);
-		// } else if (this.props.player2PowerUp === 'offYourLine'){
-		// 	let drawing = new Image() 
-		// 	drawing.src = require('assets/images/offYourLine.png')
-		// 	this.ctx.drawImage(drawing,this.props.width -90,20, 70, 30);
-		// }
-
 		this.ctx.beginPath();
 		this.ctx.setLineDash([15, 15]);
-		this.ctx.strokeStyle = '#555';
+		this.ctx.strokeStyle = '#f7f7f7';
 		this.ctx.moveTo(this.props.width / 2, 0);
 		this.ctx.lineTo(this.props.width / 2, this.props.height);
 		this.ctx.stroke();
@@ -215,8 +186,7 @@ export default class Canvas extends Component {
 	}
 
 	drawBall(){
-		function Circle(x, y, r) {
-		    "use strict";
+		function Circle(x, y, r) {	  
 		    this.x = (x === null) ? 0 : x;
 		    this.y = (y === null) ? 0 : y;
 		    this.r = (r === null) ? 0 : r;
@@ -270,7 +240,6 @@ export default class Canvas extends Component {
 
 	drawPlayer(){
 		function Player(x, y, w, h, fill) {
-		    "use strict";
 		    this.x = (x === null) ? 20 : x;
 		    this.y = (y === null) ? 0 : y;
 		    this.draw = function(ctx) {
@@ -345,12 +314,6 @@ export default class Canvas extends Component {
 						</div>
 					}
 				</div>	
-				{this.state.player1PowerUp &&
-					<img className="powerUpPlayer1" style={{top: this.playerY + 35 +'px', left: this.playerX + 'px'}}src={require('assets/images/lightning.png')} />
-				}
-				{this.state.player2PowerUp &&
-					<img className="powerUpPlayer2" style={{top: this.player2Y + 35 +'px', left: this.player2X - 30 + 'px'}}src={require('assets/images/lightning.png')} />
-				}	
 			</div>
 		)
 	}

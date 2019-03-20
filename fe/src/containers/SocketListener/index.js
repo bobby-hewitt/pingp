@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import io from 'socket.io-client';
 
 
 //pingP events
@@ -18,18 +17,15 @@ import { updatePlayers } from 'actions/general/host'
 import { setPlayerData } from 'actions/general/player'
 
 class SocketListener extends Component {
-  constructor(props){
-    super(props)
-  }
 
   componentDidMount(){
     // console.log('socket listener mounting')
     if (this.props.isHost){
-      subscribeToHostEvents(this, (action, data) => {
+      subscribeToHostEvents(this, this.props.socket, (action, data) => {
         this.props[action](data)
       })
     } else {
-     subscribeToPlayerEvents(this, (action, data) => {
+     subscribeToPlayerEvents(this, this.props.socket, (action, data) => {
         this.props[action](data)
      })
    }

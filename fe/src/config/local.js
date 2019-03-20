@@ -1,6 +1,6 @@
 const local = {
 	isLocal: true,
-	localServer:'172.23.150.205',
+	localServer:'172.23.150.204',
 	publicServer: 'https://bping.herokuapp.com',
 	domain: 'http://www.pingp.co'
 }

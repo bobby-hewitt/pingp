@@ -49,6 +49,12 @@ io.on('connection', function(socket){
   socket.on('quit-game-player', PlayerConnection.quitGame.bind(this, socket))
   socket.on('game-over', HostConnection.gameOver.bind(this, socket))
   socket.on('restart-game', PlayerConnection.restartGame.bind(this, socket))
+  socket.on('choose-game', PlayerConnection.chooseGame.bind(this, socket))
+  socket.on('quiz-show-question', HostConnection.quizShowQuestion.bind(this, socket))
+  socket.on('quiz-player-response', PlayerConnection.quizPlayerResponse.bind(this, socket))
+  socket.on('quiz-send-players-to-waiting', HostConnection.quizSendPlayersToWaiting.bind(this, socket))
+  'quiz-send-players-to-waiting'
+  
 });
 
 
@@ -94,20 +100,21 @@ function checkRoomNumbers(socket, playerData){
 				}
 
 				result.players = newArray
-				console.log(result.players)
+
 				result.save(sendResultToPlayer)
 				playerData.playerNumber = playerNumber
 				playerData.room = result.long
 
 				function sendResultToPlayer(){
-					console.log('sending to player')
+					
 					socket.broadcast.to(result.long).emit('update-players', result.players);
-					let obj = {
-						result: result,
-						playerNumber: playerNumber,
-						playerData: playerData
-					}
-					socket.emit('success-joining-room', obj)
+					// let obj = {
+					// 	result: result,
+					// 	playerNumber: playerNumber,
+					// 	playerData: playerData
+					// }
+					console.log('sending player info', playerData)
+					socket.emit('success-joining-room', playerData)
 				}	
 			} else {
 				socket.emit('room-full')
@@ -134,12 +141,31 @@ function disconnect(socket){
 }
 
 function removePlayer(socket){
-	Rooms.findOne({players: socket.id}, function(err, room){
+	// User.findOne({'local.rooms': {$elemMatch: {name: req.body.username}}}, function (err, user) {
+
+ //        if (err){
+ //            return done(err);
+ //        }    
+
+ //        if (user) {
+ //            console.log("ROOM NAME FOUND");
+ //            req.roomNameAlreadyInUse = true;
+ //            next();
+
+ //        } else {
+ //            req.roomNameAlreadyInUse = false;
+ //            console.log("ROOM NAME NOT FOUND");
+ //            next();
+
+ //        }
+
+ //    });
+	Rooms.findOne({players: {$elemMatch: {id: socket.id}}}, function(err, room){
 		console.log('room', room)
 		if (room) {
 			let newArray = []
 			for (var i = 0; i < room.players.length; i++){
-				if (room.players[i] === socket.id){
+				if (room.players[i].id === socket.id){
 					newArray.push(false)
 				} else {
 					newArray.push(room.players[i])

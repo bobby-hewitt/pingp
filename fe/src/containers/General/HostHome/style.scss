@@ -37,6 +37,8 @@
 		align-items: center;
 		&.active{
 			opacity:1;
+			animation-name: playerJoined;
+  			animation-duration: 0.3s;
 		}
 	}
 	.playerIconHome{
@@ -69,4 +71,13 @@
 		border: 5px solid #f7f7f7;
 		padding:20px;background:rgba(0,0,0,0.2);
 	}
+}
+
+@keyframes playerJoined {
+  from {
+  	transform:scale(1.4);
+  }
+  to {
+  	transform:scale(1);
+  }
 }

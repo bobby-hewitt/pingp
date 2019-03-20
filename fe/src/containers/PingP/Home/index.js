@@ -5,14 +5,12 @@ import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from 'containers/SocketListener/PingP'
 import Canvas from 'components/canvas'
-import { gameOver, powerUpGained } from 'sockets/host'
-import { setGameOver, powerUpUsedGameplay } from 'actions/PingP/gameplay'
+import { gameOver } from 'sockets/PingP/host'
+import { setGameOver } from 'actions/PingP/gameplay'
 import ReactGA from 'react-ga';
 import localSetup from 'config/local'
 
 class Home extends Component {
-
-
 	constructor(props){
 		console.log('localSetup',localSetup)
 		super(props)
@@ -22,7 +20,7 @@ class Home extends Component {
 		this.player1PowerUpTimeout = null
 		this.speed = 1
 		this.state = {
-			height: window.innerHeight,
+			height: window.innerHeight -75,
 			width:window.innerWidth,
 			yDir: 0,
 			yDir2: 0,
@@ -37,7 +35,7 @@ class Home extends Component {
 	componentDidMount(){
 		this.initialiseAnalytics()
 		window.addEventListener("resize", () => {
-			this.setState({height:window.innerHeight, width: window.innerWidth})
+			this.setState({height:window.innerHeight - 75, width: window.innerWidth})
 		});
 	}
 
@@ -55,26 +53,6 @@ class Home extends Component {
 	}
 
 	componentWillReceiveProps(np){
-		// if (!this.props.player1PowerUp && np.player1PowerUp ){
-		// 	clearTimeout(this.player1PowerUpTimeout)
-		// 	this.player1PowerUpTimeout = setTimeout(() => {
-		// 		let obj = {
-		// 			playerNumber: 1,
-		// 			powerUp: false
-		// 		}
-		// 		this.props.powerUpUsedGameplay(obj)
-		// 	}, this.powerUpDuration)
-		// }
-		// if (!this.props.player2PowerUp && np.player2PowerUp ){
-		// 	clearTimeout(this.player2PowerUpTimeout)
-		// 	this.player2PowerUpTimeout = setTimeout(() => {
-		// 		let obj = {
-		// 			playerNumber: 2,
-		// 			powerUp: false
-		// 		}
-		// 		this.props.powerUpUsedGameplay(obj)
-		// 	}, this.powerUpDuration)
-		// }
 		//new player 1 data
 		if (this.state.yDir !== np.coords.y){
 			this.setState({yDir:np.coords.y})
@@ -95,7 +73,7 @@ class Home extends Component {
 		}
 		//game over 
 		if (!this.props.gameOver && np.gameOver){
-			this.clearPowerUps()
+			// this.clearPowerUps()
 			this.setState({gameOver: true})
 		}
 		//stop game
@@ -128,82 +106,55 @@ class Home extends Component {
 		gameOver(this, winner)
 	}
 
-	powerUpGained(player){
-		let obj = {
-			playerData: this.props.players[player-1],
-			playerNumber: player
-		}
-		if(this.props.players[player-1]){
-			powerUpGained(obj)
-		}
-	}
+	// powerUpGained(player){
+	// 	let obj = {
+	// 		playerData: this.props.players[player-1],
+	// 		playerNumber: player
+	// 	}
+	// 	if(this.props.players[player-1]){
+	// 		powerUpGained(obj)
+	// 	}
+	// }
 
-	clearPowerUps(){
-		//reset power ups
-		const obj = {
-			playerNumber: 1,
-			powerUp: false
-		}
+	// clearPowerUps(){
+	// 	//reset power ups
+	// 	const obj = {
+	// 		playerNumber: 1,
+	// 		powerUp: false
+	// 	}
 		
-		const obj2 = {
-			playerNumber: 2,
-			powerUp: false
-		}
-		this.props.powerUpUsedGameplay(obj)
-		this.props.powerUpUsedGameplay(obj2)	
-	}
+	// 	const obj2 = {
+	// 		playerNumber: 2,
+	// 		powerUp: false
+	// 	}
+	// 	this.props.powerUpUsedGameplay(obj)
+	// 	this.props.powerUpUsedGameplay(obj2)	
+	// }
 
 	render(){
-		const local = localSetup.isLocal
-		let uri = false;
-		if (this.props.roomCode){
-			uri = local ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://' + localSetup.localServer + ':3000/pingp/m/' + this.props.roomCode.toLowerCase() :
-			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent( localSetup.domain + '/pingp/m/' + this.props.roomCode.toLowerCase()) 
+		
+		
 			
-		} 
-		
-		
-			if(this.state.height < 500 || this.state.width < 800){
-				return(
-					<div className="tooSmall">
-						<div>
-							<p className="players">Your screen is too small to host a game.<br/><br/> Try on a laptop or desktop</p>							
-						</div>
-					</div>
-				)
-			} 
-			return(
+		return(
 			<div className="home">
-				<SocketListener isHost/>
+				<SocketListener isHost socket={this.props.socket}/>
 				<Canvas
+					scored={() => {return}}
 					player1PowerUp={this.props.player1PowerUp}
-					player2PowerUp={this.props.player2PowerUp}
-					scored={this.clearPowerUps.bind(this)}
-					powerUpGained={this.powerUpGained.bind(this)}
+					player2PowerUp={this.props.player2PowerUp}			
 					height={this.state.height}
 					width={this.state.width}
 					isGameOver={this.state.gameOver}
 					gameOver={this.gameOver.bind(this)}
-					isPlaying={this.props.gameIsStarted}
 					isPlaying={this.state.isPlaying}
 					yDir={this.state.yDir}
 					yDir2={this.state.yDir2}
-					is2Player={this.props.players.length == 2}
+					is2Player={this.props.players.length === 2}
 					numOfPlayers={this.props.players.length}/>
 					
 					<div className="code">
 						<div className="headerContainer">
-							{uri && !this.props.gameIsStarted && this.props.players.length < 2 &&
-								<div className="qr">
-									<p>Open the camera on your phone <br/>and focus on the QR code</p>
-									<img className="qrCode" src={uri} />
-									<p>Otherwise just go to:<br/><span className="instructions">{localSetup.domain}/pingp/m/{this.props.roomCode ? this.props.roomCode.toLowerCase() : ''}</span></p>	
-								</div>
-							}
-							{!this.props.gameIsStarted && this.props.players.length >= 2 &&
-								<h4 className="qr">Press play to start</h4>
-							}
-							{!this.props.gameIsStarted &&
+							{/*!this.props.gameIsStarted &&
 								<div className="socials">
 									<a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.pingp.co&t=Online%202%20Plsayer%20Pong" target="blank">
 										<div className="social" style={{backgroundImage: 'url(' + require('assets/images/facebook.png')+ ')'}} />
@@ -212,34 +163,24 @@ class Home extends Component {
 										<div className="social" style={{backgroundImage: 'url(' + require('assets/images/twitter.png')+ ')'}} />
 			 						</a>
 		 						</div>
-							}
-							{!this.props.gameIsStarted && this.props.players.length < 2 &&
-								<div>
-									<p className="players"><span className="instructions">PingP (1-2 players)</span></p>
-									<p className="instructions"></p>		
-								</div>
-							}
+							*/}
+							
 							{this.state.countdown &&
 								<h1 className="qr">{this.state.countdownNumber}</h1>
 							}
 							{this.props.gameOver &&
 								<h1 className="qr">Game over</h1>
 							}
-							{this.props.gameIsStarted && this.props.players.length < 2 &&
-								<p className="help">Pause game to add another player</p>
-							}
 						</div>
 					</div>
-
-					
 				</div>
 		)
 	}
 }
 
 const mapStateToProps = state => ({
-	player1PowerUp: state.gameplay.player1PowerUp,
-	player2PowerUp: state.gameplay.player2PowerUp,
+	// player1PowerUp: state.gameplay.player1PowerUp,
+	// player2PowerUp: state.gameplay.player2PowerUp,
 	gameIsStarted: state.gameplay.gameIsStarted,
 	roomCode: state.host.roomCode,
 	coords: state.host.coords,
@@ -251,7 +192,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   push: (path) => push(path),
   setGameOver,
-  powerUpUsedGameplay,
 }, dispatch)
 
 export default connect(

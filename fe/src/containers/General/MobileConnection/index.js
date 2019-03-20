@@ -4,15 +4,19 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import localSetup from 'config/local'
 import SocketListener from 'containers/SocketListener'
-import { joinRoom } from 'sockets/player'
+
 import { setSelf } from 'actions/general/player'
-import Button from 'components/Button'
-import TextInput from 'components/TextInput'
 import { Route } from 'react-router'
 import MobileJoin from 'containers/General/MobileJoin'
 import MobileHome from 'containers/General/MobileHome'
-
 import './style.scss'
+import PingP from 'containers/PingP/Mobile'
+
+import openSocket from 'socket.io-client'
+
+const socket = localSetup.isLocal ? openSocket(localSetup.localServer+ ':9000') : openSocket(localSetup.publicServer)
+
+
 
 class MobileConnection extends Component {
 
@@ -22,10 +26,13 @@ class MobileConnection extends Component {
 	render(){ 
 		return(
 			<div className="mobileConnectionContainer">
-				<SocketListener />
-				<Route exact path="/join/" component={MobileJoin} />
-				<Route exact path="/join/:code" component={MobileJoin} />
-				<Route exact path="/m/home" component={MobileHome} />
+				<SocketListener socket={socket}/>		
+				<div className="mobileAppContainer">
+					<Route exact path="/join/" render={() => <MobileJoin socket={socket}/>} />
+					<Route exact path="/join/:code" render={() => <MobileJoin socket={socket}/>} />
+					<Route exact path="/m/home" render={() => <MobileHome socket={socket}/>} />
+					<Route exact path="/m/pingp" render={() => <PingP socket={socket}/>} />
+				</div>
 			</div>
 		)
 	}
@@ -34,8 +41,9 @@ class MobileConnection extends Component {
 
 
 const mapStateToProps = state => ({
-	roomCode: state.host.roomCode,
-	players: state.host.players,
+	room: state.generalPlayer ? state.generalPlayer.room : '',
+	name: state.generalPlayer ? state.generalPlayer.name: '',
+	playerNumber: state.generalPlayer ? state.generalPlayer.playerNumber : '',
 	router: state.router
 })
 

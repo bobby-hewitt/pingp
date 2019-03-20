@@ -3,10 +3,11 @@ import './style.scss'
 
 export default class InfoBar extends Component {
 	render(){
-		const { roomCode, players } = this.props
+		const { roomCode  } = this.props
 		return(
 			<div className="infoBar">
-				<p className="roomCode"><span>Room code: </span> {roomCode}</p>
+				<div className="falseBackground" />
+				<p className="roomCode">{roomCode}</p>
 				<div className="hostInfoPlayersContainer">
 				{/*this.props.players.map((p, i) => {
 					return(

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { push } from 'connected-react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import localSetup from 'config/local'
 import { joinRoom } from 'sockets/player'
 import Button from 'components/Button'
 import TextInput from 'components/TextInput'
@@ -14,20 +13,8 @@ class MobileJoin extends Component {
 		super(props)
 		this.state = {
 			isSubmitting: false,
-			code: this.props.match.params.code? this.props.match.params.code.toUpperCase()  : '',
+			code: this.props.match ? this.props.match.params.code.toUpperCase()  : window.location.pathname.split('/')[2] ? window.location.pathname.split('/')[2].toUpperCase() : '',
 			name: ''
-		}
-	}
-
-	componentWillMount(){
-	console.log(this) 
-		let code = this.props.match.params.code
-		if (code){
-			let obj = {
-		      name: this.state.name,
-		      room: this.state.code
-		    }
-		    // joinRoom(obj, this)
 		}
 	}
 
@@ -39,15 +26,14 @@ class MobileJoin extends Component {
 
 	onSubmit(){
 		this.setState({isSubmitting: true})
-		if (this.state.code && this.state.name){
+		if (this.state.code){
 			let obj = {
 		      name: this.state.name,
 		      room: this.state.code
 		    }
-		    joinRoom(obj, this)
+		    joinRoom(obj, this, this.props.socket)
 		}
 	}
-
 
 	render(){ 
 		return(
@@ -56,7 +42,7 @@ class MobileJoin extends Component {
 				<div className="mobileFormContainer">
 					<TextInput label="Room code" name="code" value={this.state.code} onChange={this.onChange.bind(this, 'code')}/>
 					<TextInput label="Name" name="name"value={this.state.name} onChange={this.onChange.bind(this, 'name')}/>
-					<Button text="Let's go" onClick={this.onSubmit.bind(this)} waiting={this.state.isSubmitting}/>
+					<Button align="right" text="Let's go" onClick={this.onSubmit.bind(this)} waiting={this.state.isSubmitting}/>
 				</div>
 
 		)

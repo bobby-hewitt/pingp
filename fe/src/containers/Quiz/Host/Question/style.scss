@@ -1,0 +1,21 @@
+.questionContainer{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	.questionAnswers{
+		flex:1;
+
+	}
+	.question{
+		padding:20px 30px;
+		flex:1;
+		align-items: center;
+		justify-content: center;
+		p{
+			text-align: center;
+			font-size:50px;
+			color:#f7f7f7;
+		}
+	}
+}

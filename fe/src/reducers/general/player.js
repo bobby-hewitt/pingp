@@ -6,9 +6,10 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  // console.log('ACTION',action)
+  
   switch (action.type) {
     case 'SET_PLAYER_DATA':
+    console.log('Set player data',action.payload)
     return {
       ...state,
       playerNumber: action.payload.playerNumber,

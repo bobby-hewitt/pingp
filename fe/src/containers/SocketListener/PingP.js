@@ -2,30 +2,38 @@ import React, { Component } from 'react'
 import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import io from 'socket.io-client';
-import {subscribeToPlayerEvents} from 'sockets/player'
-import {subscribeToHostEvents} from 'sockets/host'
+//pingP events
+import {subscribeToPlayerEvents, unsubscribeToPlayerEvents} from 'sockets/PingP/player'
+import {subscribeToHostEvents, unsubscribeToHostEvents} from 'sockets/PingP/host'
+
+//pingP actions
 import { setRoomCode, startRoundHost, setResponses, setCoords1, setCoords2 } from 'actions/PingP/host'
-import { setPlayerRoom, setSelf, setPlayerNumber, powerUpGained, powerUpUsed } from 'actions/PingP/player'
+import { setPlayerRoom, setPlayerNumber, powerUpGained, powerUpUsed } from 'actions/PingP/player'
+import { setSelf } from 'actions/general/player'
 import { startGame, setGameOver, powerUpUsedGameplay } from 'actions/PingP/gameplay'
 import { updatePlayers } from 'actions/general/host'
-
+import { setPlayerData } from 'actions/general/player'
 
 class SocketListener extends Component {
-  constructor(props){
-    super(props)
-  }
-
+  
   componentDidMount(){
     // console.log('socket listener mounting')
     if (this.props.isHost){
-      subscribeToHostEvents(this, (action, data) => {
+      subscribeToHostEvents(this, this.props.socket, (action, data) => {
         this.props[action](data)
       })
     } else {
-     subscribeToPlayerEvents(this, (action, data) => {
+     subscribeToPlayerEvents(this, this.props.socket, (action, data) => {
         this.props[action](data)
      })
+   }
+  }
+
+  componentWillUnmount(){
+     if (this.props.isHost){
+      unsubscribeToHostEvents(this.props.socket)
+    } else {
+     unsubscribeToPlayerEvents(this.props.socket)
    }
   }
 
@@ -36,11 +44,17 @@ class SocketListener extends Component {
     )
   }
 }
+
 const mapStateToProps = state => ({
   // count: state.counter.count
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  //general functions
+  setSelf,
+  updatePlayers,
+  setPlayerData,
+  //game specific functions
   setRoomCode,
   powerUpUsedGameplay,
   powerUpGained,
@@ -51,7 +65,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   setResponses,
   setCoords1,
   setCoords2,
-  setSelf,
   startRoundHost,
   setPlayerRoom,
   push: (path) => push('/' + path)

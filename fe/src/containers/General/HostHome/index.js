@@ -17,9 +17,8 @@ class HostHome extends Component {
 			<div className="hostHomeContainer">
 			{this.props.roomCode &&
 				<a href={link} target="blank">
-				{console.log(link)}
 					<div className="qr">
-						<img src={QRuri} className="globalQRCode" />
+						<img src={QRuri} className="globalQRCode" alt="QR code"/>
 						<p className="hostHomeInstructions">Scan the QR code or visit<br/>{localSetup.domain}/join</p>
 					</div>
 				</a>
@@ -27,7 +26,7 @@ class HostHome extends Component {
 				<div className="players">
 					{this.props.players.map((player, i) => {
 						return(
-							<div className={player ? "hostPlayerContainer active" : 'hostPlayerContainer'}>
+							<div key={i} className={player ? "hostPlayerContainer active" : 'hostPlayerContainer'}>
 								<div className="playerIconHome" />{player.name || 'PLAYER ' + (i + 1)}
 							</div>
 						)

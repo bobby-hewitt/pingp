@@ -4,14 +4,15 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import './style.scss'
 import SocketListener from 'containers/SocketListener/PingP'
-import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket, powerUpUsedSocket } from 'sockets/player'
-import { setSelf, powerUpUsed  } from 'actions/PingP/player'
+import { sendOrientation, startGameSocket, quitGameSocket, restartGameSocket } from 'sockets/PingP/player'
+import { setSelf  } from 'actions/PingP/player'
 import { startGame, setGameOver } from 'actions/PingP/gameplay'
 import ReactGA from 'react-ga';
 
 class Mobile extends Component {
 	constructor(props){
 		super(props)
+		this.onTilt = this.onTilt.bind(this)
 		this.state = {
 			xDir: 0,
 			yDir: 0,
@@ -23,15 +24,6 @@ class Mobile extends Component {
 
 	componentWillMount(){ 
 		this.initialiseAnalytics()
-		let code = window.location.pathname.split('/')[3]
-		if (code){
-
-			let obj = {
-		      name: '',
-		      room: code.toUpperCase()
-		    }
-		    joinRoom(obj, this)
-		}
 	}
 
 	initialiseAnalytics(){
@@ -43,22 +35,29 @@ class Mobile extends Component {
 		if (!np.playerNumber && this.props.playerNumber){
 			this.props.push('not-found')
 		}
-
 	}
 
-	componentDidMount(){
-		window.addEventListener('deviceorientation', (orientation) => {
+	onTilt(orientation){
+		
 			let {y, dir, visualSpeed } = this.findLimit(orientation.beta)
 			if (y !== this.state.yDir){				
 				let dirs = {
 					y: y,
-					playerNumber: this.props.playerNumber
+					playerNumber: this.props.playerNumber,
+					room: this.props.room
 				}
-				sendOrientation(dirs, this)
+				sendOrientation(dirs, this, this.props.socket)
 				this.setState({yDir: y, visualSpeed, dir})
 			}
-		})
+		
 	}
+
+	componentDidMount(){
+		window.addEventListener('deviceorientation', this.onTilt)
+	}
+   	componentWillUnmount() {
+        window.removeEventListener('deviceorientation', this.onTilt, false);
+    }
 
 	findLimit(coord){
 		// if (coord < -27.5 + 45) return {y: -20, dir: 'down', visualSpeed: 5}
@@ -71,23 +70,39 @@ class Mobile extends Component {
 		else if (coord < 25 + 45) return {y: 6, dir: 'up', visualSpeed: 2}
 		else if (coord < 35 + 45) return {y: 9, dir: 'up', visualSpeed: 3}
 		// else if (coord < 45 + 45) return {y: 16, dir: 'up', visualSpeed: 4}
-		else return {y: 12, dir: '+', dir: 'up', visualSpeed: 4}
+		else return {y: 12, dir: 'up', visualSpeed: 4}
 	}
 
-	usePowerUp(){
-		let obj = {
-			room: this.props.room,
-			playerNumber: this.props.playerNumber,
-			powerUp: this.props.powerUp
-		}
-		
-		powerUpUsedSocket(obj, this)
-	}
+
 
 	render(){
 		return(
 			<div className="mobile">
-				<SocketListener />
+				<SocketListener socket={this.props.socket}/>
+				<div className="info">	
+					<div className="buttonSetMobile">
+						<div className="pausePlay buttonMobile">
+							{!this.props.gameIsStarted && !this.props.gameOver &&
+								<img src={require('assets/images/playBlack.png')} className="play" onClick={startGameSocket.bind(this, this, this.props.socket)} alt="Play"/>
+							}
+							{this.props.gameIsStarted && !this.props.gameOver &&
+								<img src={require('assets/images/pauseBlack.png')} onClick={startGameSocket.bind(this, this, this.props.socket)} alt="Pause"/>
+							}
+							{this.props.gameOver &&
+								<img src={require('assets/images/playBlack.png')} className="play" onClick={restartGameSocket.bind(this, this, this.props.socket)}alt="Play"/>
+							}
+						</div>
+						{!this.props.gameOver &&
+							<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
+						}
+						{this.props.gameOver &&
+							<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
+						}
+						<div className="buttonMobile warning quit" onClick={quitGameSocket.bind(this, this, this.props.socket)} >
+							<p>Quit</p>
+						</div>	
+					</div>	
+				</div>
 				<div className="gamePadContainer">
 						<div className="gamePad">
 							<p className="instructionsMobile">Tilt phone to control paddle</p>
@@ -111,30 +126,7 @@ class Mobile extends Component {
 							</div>
 						</div>
 				</div>
-				<div className="info">	
-					<div className="buttonSetMobile">
-						<div className="pausePlay buttonMobile">
-							{!this.props.gameIsStarted && !this.props.gameOver &&
-								<img src={require('assets/images/playBlack.png')} className="play" onClick={startGameSocket.bind(this, this)}/>
-							}
-							{this.props.gameIsStarted && !this.props.gameOver &&
-								<img src={require('assets/images/pauseBlack.png')} onClick={startGameSocket.bind(this, this)}/>
-							}
-							{this.props.gameOver &&
-								<img src={require('assets/images/playBlack.png')} className="play" onClick={restartGameSocket.bind(this, this)}/>
-							}
-						</div>
-						{!this.props.gameOver &&
-							<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
-						}
-						{this.props.gameOver &&
-							<p className="headerMobile">Player{JSON.stringify(this.props.playerNumber) === 'null' ? 0 : JSON.stringify(this.props.playerNumber)} </p>
-						}
-						<div className="buttonMobile warning quit" onClick={quitGameSocket.bind(this, this)} >
-							<p>Quit</p>
-						</div>	
-					</div>	
-				</div>
+				
 			</div>
 		)
 	}
@@ -143,18 +135,16 @@ class Mobile extends Component {
 const mapStateToProps = state => ({
 	gameIsStarted: state.gameplay.gameIsStarted,
 	router: state.router,
-	room: state.player.room,
-	playerNumber: state.player.playerNumber,
+	room: state.generalPlayer.room,
+	playerNumber: state.generalPlayer.playerNumber,
 	gameOver: state.gameplay.gameOver,
 	winner: state.gameplay.winner,
-	powerUp: state.player.powerUp
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   push: (path) => push(path),
   setSelf,
   setGameOver,
-  powerUpUsed,
   startGame,
 }, dispatch)
 
