@@ -16,7 +16,7 @@ function unsubscribeToHostEvents(socket) {
 }
 
 
-function sendPlayersToWaiting(){
+function sendPlayersToWaiting(socket){
 	socket.emit('quiz-send-players-to-waiting')
 }
 

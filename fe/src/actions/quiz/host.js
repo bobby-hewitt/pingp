@@ -8,7 +8,6 @@ export const setupGame = (payload) => {
 }
 
 export const showQuestionHost = (payload) => {
-	console.log('in action')
   return dispatch => {
     dispatch({
       type: 'QUIZ_SHOW_QUESTION_HOST',
@@ -18,6 +17,7 @@ export const showQuestionHost = (payload) => {
 }
 
 export const showAnswer = (payload) => {
+  console.log('in action')
   return dispatch => {
     dispatch({
       type: 'QUIZ_SHOW_ANSWERS_HOST',

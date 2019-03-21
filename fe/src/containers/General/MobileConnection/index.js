@@ -9,6 +9,7 @@ import { setSelf } from 'actions/general/player'
 import { Route } from 'react-router'
 import MobileJoin from 'containers/General/MobileJoin'
 import MobileHome from 'containers/General/MobileHome'
+import MobileQuiz from 'containers/Quiz/Mobile'
 import './style.scss'
 import PingP from 'containers/PingP/Mobile'
 
@@ -32,6 +33,7 @@ class MobileConnection extends Component {
 					<Route exact path="/join/:code" render={() => <MobileJoin socket={socket}/>} />
 					<Route exact path="/m/home" render={() => <MobileHome socket={socket}/>} />
 					<Route exact path="/m/pingp" render={() => <PingP socket={socket}/>} />
+					<Route exact path="/m/quiz" render={() => <MobileQuiz socket={socket}/>} />
 				</div>
 			</div>
 		)

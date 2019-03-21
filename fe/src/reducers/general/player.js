@@ -16,6 +16,7 @@ export default (state = initialState, action) => {
       room:action.payload.room,
       name:action.payload.name
     }
+    
     default:
       return state
   }

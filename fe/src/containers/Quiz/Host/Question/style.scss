@@ -3,19 +3,37 @@
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
-	.questionAnswers{
-		flex:1;
-
-	}
+	flex:1;
+	
 	.question{
-		padding:20px 30px;
+		height:30%;
+		padding:50px 60px 20px 60px;
 		flex:1;
 		align-items: center;
 		justify-content: center;
 		p{
 			text-align: center;
-			font-size:50px;
+			font-size:30px;
+			font-weight: bold;
 			color:#f7f7f7;
 		}
+	}
+	.questionAnswer{
+		display: flex;
+		flex:1;
+		p{
+			font-size: 50px;
+		}
+		font-weight: bold;
+		color:#f7f7f7;
+		/* align-items: center; */
+		justify-content: center;
+		/* height:50%; */
+	}
+	.responsesContainerHost{
+		display: flex;
+		flex:1;
+		/* align-items: center; */
+		/* justify-content: center; */
 	}
 }

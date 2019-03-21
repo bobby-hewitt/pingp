@@ -7,8 +7,13 @@ export default class Question extends Component {
 
 			<div className="questionContainer">
 				<div className="question">
-				<p >{this.props.question ? unescape(this.props.question.question): ''}</p>
+					<p >{this.props.question ? unescape(this.props.question.question): ''}</p>
 				</div>
+				{this.props.quizState === 'answer' && 
+					<div className="questionAnswer">
+						<p>{this.props.question ? unescape(this.props.question.correct_answer): ''}</p>
+					</div>
+				}
 				
 			</div>
 		)

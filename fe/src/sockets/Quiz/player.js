@@ -1,4 +1,5 @@
 function subscribeToPlayerEvents(self, socket, cb) {
+	console.log('subscribing to quiz')
 	socket.on('quiz-show-question-player', showQuestion.bind(this, self))
 	socket.on('quiz-send-to-waiting', sendToWaiting.bind(this, self))
  //  	socket.on('update-players', updatePlayers.bind(this, cb))
@@ -12,8 +13,9 @@ function unsubscribeToPlayerEvents(socket) {
 	// socket.removeAllListeners("restart-game");
 }
 
-function showQuestion(self, socket){
-	self.props.showQuestionPlayer()
+function showQuestion(self, data){
+	console.log('getting question', data)
+	self.props.showQuestionPlayer(data)
 }
 
 function sendToWaiting(self){
@@ -24,7 +26,7 @@ function sendResponse(self, data, socket){
 	data.time = (new Date()).getTime()
 	data.id = socket.id
 	data.room = self.props.room
-	self.props.setWaiting()
+	self.props.setWaitingPlayer()
 	socket.emit('quiz-player-response', data)
 	//rather tahn push I should maybe use state to control waiting vs interacting
 	// self.props.push('/m/quiz/waiting')
@@ -46,6 +48,7 @@ function sendResponse(self, data, socket){
 // }
 
 export {
+	sendResponse,
 	showQuestion,
 	subscribeToPlayerEvents,
 	unsubscribeToPlayerEvents,

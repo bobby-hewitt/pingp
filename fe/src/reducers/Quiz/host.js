@@ -1,6 +1,7 @@
 
 const initialState = {
   questions: [],
+  startTime: 0,
   questionIndex: 0,
   players: [],
   currentQuestion: null,
@@ -16,6 +17,7 @@ export default (state = initialState, action) => {
         ...state,
         questions: action.payload.questions,
         currentQuestion: action.payload.questions[0],
+        responses: [],
         players: action.payload.players,
       }
     case 'QUIZ_SHOW_QUESTION_HOST':
@@ -30,13 +32,17 @@ export default (state = initialState, action) => {
         //move on to the next question
         return {
           ...state,
+          startTime: (new Date()).getTime(),
+          responses: [],
           currentQuestion: state.questions[state.questionIndex],  
           quizState: "question"
         }
       }
-    case 'QUIZ_SHOW_ANSWER_HOST':
+    case 'QUIZ_SHOW_ANSWERS_HOST':
       return {
-        ...state 
+        ...state,
+        quizState:'answer',
+        questionIndex:state.questionIndex + 1
       }
     case 'QUIZ_SHOW_SCORES_HOST':
     //need to update questiobn index

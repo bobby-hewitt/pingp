@@ -1,0 +1,80 @@
+.playerResponse{
+	position: relative;
+	border: 5px solid #f7f7f7;
+	background:rgba(0,0,0,0.1);
+	padding: 20px;
+	border-radius: 10px;
+	margin:0 10px;
+	&.hidden{
+		opacity:0;
+	}
+	p{
+		color:#f7f7f7;
+		font-weight: bold;
+		font-size: 30px;
+	}
+	&.animateOut{
+		animation-name: incorrect;
+		animation-duration: 2s; 
+		animation-timing-function: ease-out; 
+		animation-fill-mode: forwards;
+		animation-play-state: running; 
+	}
+	.bonus{
+		position:absolute;
+		top:0;
+		left:0;
+		font-size: 50px;
+		color:#34df12;
+		animation-name: points;
+		animation-duration: 2s; 
+		animation-delay: 3.5s;
+		opacity:0;
+		animation-timing-function: ease-out; 
+		animation-fill-mode: forwards;
+		animation-play-state: running; 
+	}
+	.correct{
+		position:absolute;
+		top:0;
+		left:0;
+		font-size: 50px;
+		color:#34df12;
+		animation-name: points;
+		animation-duration: 2s; 
+		animation-delay: 2s;
+		opacity:0;
+		animation-timing-function: ease-out; 
+		animation-fill-mode: forwards;
+		animation-play-state: running; 
+	}
+}
+
+@keyframes incorrect {
+	0%   {
+		transform:translateY(0)
+	}
+	50%{
+		transform:translateY(0)
+	}
+	65%  {
+		transform:translateY(-10vh)
+	}
+	100% {
+		transform:translateY(100vh)
+	}
+}
+
+@keyframes points {
+	0%   {
+		transform:translateY(0);
+		opacity:1;
+	}
+	50%{
+		opacty:1;
+	}
+	100% {
+		opacity:0;
+		transform:translateY(-100px)
+	}
+}

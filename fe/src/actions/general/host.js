@@ -6,3 +6,12 @@ export const updatePlayers = (payload) => {
     })
   }
 }
+
+export const setScores = (payload) => {
+  return dispatch => {
+    dispatch({
+      type: 'SET_SCORES',
+      payload
+    })
+  }
+}
