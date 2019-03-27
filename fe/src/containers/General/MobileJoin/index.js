@@ -10,11 +10,55 @@ import './style.scss'
 class MobileJoin extends Component {
 
 	constructor(props){
+
+		function getPrevious(){
+			if (window.localStorage && window.localStorage.getItem('pingp')){
+				return JSON.parse(window.localStorage.getItem('pingp'))
+			} else {
+				return null
+			}
+		}
+
+		// getCode(){
+		// 	console.log(this)
+		// 	if (this.props.match){
+		// 		return this.props.match.params.code.toUpperCase()
+		// 	} else if ( window.location.pathname.split('/')[2]){
+		// 		return window.location.pathname.split('/')[2].toUpperCase()	
+		// 	} else if (window.localStorage && window.localStorage.getItem('pingp')){
+		// 		return JSON.parse(window.localStorage.getItem('pingp')).room
+		// 	} else {
+		// 		return ''
+		// 	}
+		// }
+
+		function getName(){
+			if (window.localStorage && window.localStorage.getItem('pingp')){
+				return JSON.parse(window.localStorage.getItem('pingp')).name
+			} else {
+				return ''
+			}
+		}
+
 		super(props)
+		this.previous = getPrevious()
 		this.state = {
 			isSubmitting: false,
-			code: this.props.match ? this.props.match.params.code.toUpperCase()  : window.location.pathname.split('/')[2] ? window.location.pathname.split('/')[2].toUpperCase() : '',
-			name: ''
+			code: this.getCode(),
+			name: getName()
+		}
+	}
+
+	getCode(){
+		console.log(this)
+		if (this.props.match){
+			return this.props.match.params.code.toUpperCase()
+		} else if ( window.location.pathname.split('/')[2]){
+			return window.location.pathname.split('/')[2].toUpperCase()	
+		} else if (window.localStorage && window.localStorage.getItem('pingp')){
+			return JSON.parse(window.localStorage.getItem('pingp')).room
+		} else {
+			return ''
 		}
 	}
 
@@ -31,14 +75,15 @@ class MobileJoin extends Component {
 		      name: this.state.name,
 		      room: this.state.code
 		    }
+		    if (window.localStorage){
+		    	window.localStorage.setItem('pingp', JSON.stringify(obj))
+			}
 		    joinRoom(obj, this, this.props.socket)
 		}
 	}
 
 	render(){ 
 		return(
-			
-				
 				<div className="mobileFormContainer">
 					<TextInput label="Room code" name="code" value={this.state.code} onChange={this.onChange.bind(this, 'code')}/>
 					<TextInput label="Name" name="name"value={this.state.name} onChange={this.onChange.bind(this, 'name')}/>

@@ -18,6 +18,12 @@ class MobileHome extends Component {
 		this.props.push(`/m/${slug}`)
 	}
 
+	componentWilloMount(){
+		if (!this.props.room){
+			this.props.push('/join')
+		}
+	}
+
 	render(){
 		return(
 			<div className="mobileHomeContainer">

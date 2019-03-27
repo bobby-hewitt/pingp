@@ -22,6 +22,12 @@ class QuizMobile extends Component {
 		sendResponse(this, obj, this.props.socket)
 	}
 
+	componentWillMount(){
+		if (!this.props.room){
+			this.props.push('/join')
+		}
+	}
+
 	render(){
 		
 		return(

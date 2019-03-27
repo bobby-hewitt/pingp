@@ -23,6 +23,9 @@ class Mobile extends Component {
 	}
 
 	componentWillMount(){ 
+		if (!this.props.room){
+			this.props.push('/join')
+		}
 		this.initialiseAnalytics()
 	}
 
