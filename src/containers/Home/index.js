@@ -196,6 +196,7 @@ class Home extends Component {
 						</div>
 					}
 					{!this.props.gameIsStarted && this.props.players.length >= 2 &&
+						
 						<h4 className="qr">Press play to start</h4>
 					}
 					{!this.props.gameIsStarted &&
