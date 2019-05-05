@@ -51,6 +51,6 @@ exports.playerBuzz = function(socket, data){
 }
 
 exports.deviceOrientation = function(socket, data){
-	// console.log('recieving data', data)
+	console.log('recieving data', data)
 	socket.to(data.room).emit('device-orientation-sending', data)
 }
