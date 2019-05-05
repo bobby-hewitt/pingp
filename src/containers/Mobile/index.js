@@ -51,7 +51,7 @@ class Mobile extends Component {
 		window.addEventListener('deviceorientation', (orientation) => {
 			let {y, dir, visualSpeed } = this.findLimit(orientation.beta)
 			// let x = this.findLimit(orientation.gamma)
-
+			this.setState({yVis: y})
 			if (y !== this.state.yDir){				
 				let dirs = {
 					y: y,
@@ -94,7 +94,7 @@ class Mobile extends Component {
 			
 				<div className="gamePadContainer">
 						<div className="gamePad">
-							<p className="instructionsMobile">Tilt phone to control paddle</p>
+							<p className="instructionsMobile">{this.state.yVis}</p>
 							{this.props.gameOver &&
 								<p className="playerResult">{this.props.winner.indexOf(this.props.playerNumber) > -1 ? 'You win' : 'You lose'}</p>
 							}
