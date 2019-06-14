@@ -162,7 +162,7 @@ class Home extends Component {
 		const online = true
 		let uri = false;
 		if (this.props.roomCode){
-			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('https://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
+			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('https://bping.herokuapp.com/m/' + this.props.roomCode.toLowerCase()) :  
 			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://172.23.150.150:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
 		
