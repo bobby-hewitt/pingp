@@ -83,7 +83,7 @@ function restartGame(cb){
 
 // emit
 function startGameSocket(self){
-	
+	console.log('starting game')
 	self.props.startGame()
 	emit('start-game', self.props.room.long)
 }

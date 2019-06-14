@@ -1,5 +1,5 @@
 import openSocket from 'socket.io-client';
-// const  socket = openSocket('172.23.150.213:9000');
+// const  socket = openSocket('172.23.150.211:9000');
 const  socket = openSocket('https://bping.herokuapp.com');
 const POWER_UP_DURATION = 5000
 function subscribeToHostEvents(self, cb) {

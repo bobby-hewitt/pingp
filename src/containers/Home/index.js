@@ -159,11 +159,11 @@ class Home extends Component {
 	}
 
 	render(){
-		const online = true
+		const online = false
 		let uri = false;
 		if (this.props.roomCode){
-			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('http://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
-			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://192.168.1.117:3000/m/' + this.props.roomCode.toLowerCase()
+			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('https://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
+			'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://172.23.150.150:3000/m/' + this.props.roomCode.toLowerCase()
 		} 
 		
 		

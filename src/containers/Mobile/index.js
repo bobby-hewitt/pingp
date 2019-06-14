@@ -7,12 +7,13 @@ import SocketListener from '../SocketListener'
 import { joinRoom, sendOrientation, startGameSocket, quitGameSocket, restartGameSocket, powerUpUsedSocket } from '../../sockets/player'
 import { setSelf, powerUpUsed  } from '../../actions/player'
 import { startGame, setGameOver } from '../../actions/gameplay'
-import ReactGA from 'react-ga';
+// import ReactGA from 'react-ga';
 
 class Mobile extends Component {
 
 	constructor(props){
 		super(props)
+		this.deviceOrientation = this.deviceOrientation.bind(this)
 		this.state = {
 			xDir: 0,
 			yDir: 0,
@@ -23,7 +24,8 @@ class Mobile extends Component {
 	}
 
 	componentWillMount(){ 
-		this.initialiseAnalytics()
+		// console.log('mounting')
+		// this.initialiseAnalytics()
 		let code = window.location.pathname.split('/')[2]
 		if (code){
 
@@ -35,10 +37,11 @@ class Mobile extends Component {
 		}
 	}
 
-	initialiseAnalytics(){
- 		ReactGA.initialize('UA-135889592-1');
-		ReactGA.pageview('/player');
-	}
+	// initialiseAnalytics(){
+	// 	console.log('initialising')
+ // 		ReactGA.initialize('UA-135889592-1');
+	// 	ReactGA.pageview('/player');
+	// }
 
 	componentWillReceiveProps(np){
 		if (!np.playerNumber && this.props.playerNumber){
@@ -48,7 +51,12 @@ class Mobile extends Component {
 	}
 
 	componentDidMount(){
-		window.addEventListener('deviceorientation', (orientation) => {
+		// console.log('did mount')
+		window.addEventListener("deviceorientation", this.deviceOrientation);
+	}
+
+	deviceOrientation(orientation){
+		console.log('getting coords')
 			let {y, dir, visualSpeed } = this.findLimit(orientation.beta)
 			// let x = this.findLimit(orientation.gamma)
 
@@ -60,7 +68,11 @@ class Mobile extends Component {
 				sendOrientation(dirs, this)
 				this.setState({yDir: y, visualSpeed, dir})
 			}
-		})
+	}
+	
+
+	componentWillUnmount(){
+		// window.removeEventListener('deviceorientation', this.deviceOrientation)
 	}
 
 	findLimit(coord){
