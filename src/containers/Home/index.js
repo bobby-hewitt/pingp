@@ -150,7 +150,6 @@ class Home extends Component {
 			powerUp: false
 		}
 		
-		
 		const obj2 = {
 			playerNumber: 2,
 			powerUp: false
