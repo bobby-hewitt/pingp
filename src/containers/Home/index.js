@@ -159,7 +159,7 @@ class Home extends Component {
 	}
 
 	render(){
-		const online = false
+		const online = true
 		let uri = false;
 		if (this.props.roomCode){
 			uri = online ? 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' +  encodeURIComponent('https://www.pingp.co/m/' + this.props.roomCode.toLowerCase()) :  
